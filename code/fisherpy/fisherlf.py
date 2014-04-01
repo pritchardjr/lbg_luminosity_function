@@ -8,14 +8,14 @@
 from math import *
 import numpy as np
 import cosmologypy.Cosmology as CCosm
-import fisher
+from fisher import Fisher
 import scipy
 
 
-class FisherLF(fisher.Fisher):
+class FisherLF(Fisher):
     """ Fisher class for Galaxy Luminosity Function derived calculations """
     def __init__(self,paramdict={'oml':0.7,'hubble':0.7,'omm':0.3,'omk':0.0,'Ombhh':0.0225,'nscal':0.95,'Ascal':25.0}):
-        fisher.Fisher.__init__(self,paramdict)
+        Fisher.__init__(self,paramdict)
         self._fishertype="FisherCL"
 
     def calcFisherMatrix(self):
@@ -76,7 +76,7 @@ class LuminosityFunction:
             self.L0=0.0
             self.z=z
         else:
-            print "NOT YET DEFINED"
+            print "NOT YET DEFINED HERE"
 
     def __repr__(self):
         return "%s(M0=%g phi0=%g alpha=%g z=%g)" % ("LF",self.M0,self.phi0,self.alpha,self.z)
@@ -119,8 +119,8 @@ class LuminosityFunction:
         units: phi: no. galaxies per unit comoving volume per unit luminosity
         """
         phi=self.phi0/self.L0;
-        phi*=pow(L/self.L0,self.alpha);
-        phi*=exp(-L/self.L0);
+        phi*=np.power(L/self.L0,self.alpha);
+        phi*=np.exp(-L/self.L0);
         return phi
 
     def numberdensityL(self,Lmin):
@@ -137,10 +137,9 @@ class LuminosityFunction:
 
     def luminosityFunctionM(self,M):
         """ Luminosity function dn/dM in absolute magnitude M """
-        print M
-        phi=self.phi0*log(10.0)/2.5
-        phi*=exp(-0.4*(M-self.M0)*(self.alpha+1.0)*log(10.0))
-        phi*=exp(-exp(-0.4*(M-self.M0)*log(10.0)))
+        phi=self.phi0*np.log(10.0)/2.5
+        phi*=np.exp(-0.4*(M-self.M0)*(self.alpha+1.0)*np.log(10.0))
+        phi*=np.exp(-np.exp(-0.4*(M-self.M0)*np.log(10.0)))
         return phi
 
     def numberdensityM(self,Mmin):

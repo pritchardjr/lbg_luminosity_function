@@ -6,8 +6,8 @@
 import cosmologypy as cosmopy
 import cosmologypy.Cosmology as CC
 import cosmologypy.uvdensity as UVD
-import tbconstants
-import cosmoconstants
+import cosmologypy.tbconstants
+import cosmologypy.cosmoconstants
 import numpy as np
 import math
 import scipy.integrate
