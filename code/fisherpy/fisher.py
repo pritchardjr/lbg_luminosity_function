@@ -91,3 +91,7 @@ class Fisher:
         """ calculate Fisher matrix for parameters in tagdict """
         pass
 
+
+    def gridIntegrate(x,y,Fxy):
+        """ """
+        pass
