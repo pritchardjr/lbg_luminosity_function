@@ -112,6 +112,12 @@ class Cosmology:
 
     def getOmega0hh(self):
         return self.Omegamhh
+
+    def getOmegab(self):
+        return self.Omegab
+
+    def getOmegabhh(self):
+        return self.Omegabhh
     
 ######## Basic distance functions
     def EZ(self,z):
@@ -516,8 +522,21 @@ class Cosmology:
     # Translated from Fortran code provided by Rennan Barkana, transfer
     # function comes ultimately from Wayne Hu's website.
 
+    def dndlM(self,z,tM,massfcn='PS'):
 
-    def dndlM(self,z,tM):
+        if massfcn is 'PS':
+            tdn=self.dndlMPress(z,tM)
+        elif massfcn is 'ST':
+            tdn=self.dndlMSheth(z,tM)
+        elif massfcn is 'JN':
+            tdn=self.dndlMJenkins(z,tM)
+        else:
+            raise Exception("Mass function - "+massfcn+" - is not defined")
+            
+        return tdn
+
+
+    def dndlMPress(self,z,tM):
         """ Calculates Press-Schechter mass function 
         tM = halo mass (Msun) """
         dCritZ = self.delCrit0(z)/self.growthFac(z);
@@ -747,19 +766,33 @@ class Cosmology:
         else:
             return sig,dsdm
 
+
+    def cumulativeHaloCount(self,z,mass,massfcn='PS'):
+        """ Integrate mass function to return the total number density of
+        halos up to a given mass """
+
+        mlow=log(self.coolMass(z))
+        mhigh=log(mass)
+        if mhigh<mlow:
+            raise Exception("mass is lower than cooling mass in cumulativeHaloCount")
+
+        nTot=scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn),mlow,mhigh)
+
+        return nTot[0]
+
 ###########################################################
 ############## Halo Charactetics
 #######################################################
 
     def jeansMass(self,z):
         """ Jeans mass; BL01 eq. 41 """
-        return (6.2*pow(self.getOm0hh(),-0.5)*pow(self.getOmbhh(),-0.6)*pow(1.0+z,1.5));
+        return (6.2*pow(self.getOmega0hh(),-0.5)*pow(self.getOmegabhh(),-0.6)*pow(1.0+z,1.5));
 
 
     def filterMass(self,z):
         """ Filtered mass, assuming a continuous Jeans mass and adiabatic
         expansion past decoupling.  See Gnedin (2000) """
-        zt = 137.0*pow(self.getOmbhh()/0.022,0.4) - 1.0;
+        zt = 137.0*pow(self.getOmegabhh()/0.022,0.4) - 1.0;
         mass = 0.6*(1.0-2.0/3.0*sqrt((1.0+z)/(1.0+zt)));
         mass += log((1.0+zt)/(1.0+z))-2.0+2.0*sqrt((1.0+z)/(1.0+zt));
         mass = pow(3.0*mass,1.5);
