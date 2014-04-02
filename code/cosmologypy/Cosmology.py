@@ -379,7 +379,7 @@ class Cosmology:
             mMin = mMax;
         return ans;
 
-    def halomatch(self,ngal):
+    def halomatch(self,z,ngal,massfcn='PS'):
         """ invert nCollObject to find the mass for which the density of
         halos with M>mass is equal to ngal
 
@@ -387,16 +387,16 @@ class Cosmology:
         """
 
         #bracket expected range with sensible upper & lower limit
-        mmin=cosm.coolMass(z)/100.0
+        mmin=self.coolMass(z)/100.0
         mmax=1.0e20
 
         #throws error if the upper limit is high enough that dndlM is zero
-        lim=cosm.dndlM(z,mmax,massfcn='PS')
+        lim=self.dndlM(z,mmax,massfcn)
         while(lim==0):
             mmax/=10.0
-            lim=cosm.dndlM(z,mmax,massfcn='PS')
+            lim=self.dndlM(z,mmax,massfcn)
         
-        mass=scipy.optimize.brentq(lambda x:cosm.nCollObject(z,x,massfcn='PS')-ngal,mmin,mmax)
+        mass=scipy.optimize.brentq(lambda x:self.nCollObject(z,x,massfcn)-ngal,mmin,mmax)
 
         #print mass, cosm.nCollObject(z,mass,'PS'),ngal
         return mass

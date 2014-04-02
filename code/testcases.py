@@ -33,24 +33,13 @@ def halotest():
 
     plt.show()
 
-def halomatch():
+def halomatch(M= -15):
     cosm=CC.Cosmology()
     LF=CLF.LuminosityFunction()
     z=2
 
-    M= -15
     ngal=LF.numberdensityM(M)
-    mmin=cosm.coolMass(z)/100.0
-    mmax=1.0e20
+    mass=cosm.halomatch(z,ngal,'PS')
 
-    #throws error if the upper limit is high enough that dndlM is zero
-    lim=cosm.dndlM(z,mmax,massfcn='PS')
-    while(lim==0):
-        mmax/=10.0
-        lim=cosm.dndlM(z,mmax,massfcn='PS')
-        
-    
-    mass=scipy.optimize.brentq(lambda x:cosm.nCollObject(z,x,massfcn='PS')-ngal,mmin,mmax)
-
-    print mmax
     print mass, cosm.nCollObject(z,mass,'PS'),ngal
+    return mass
