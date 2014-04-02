@@ -538,7 +538,10 @@ class Cosmology:
 
     def dndlMPress(self,z,tM):
         """ Calculates Press-Schechter mass function 
-        tM = halo mass (Msun) """
+        tM = halo mass (Msun)
+
+        tdn = dn/dlogM= M*dn/dM (Mpc^-3)
+        """
         dCritZ = self.delCrit0(z)/self.growthFac(z);
         sigM,dsdM = self.sigma0fM(tM,True);
         dlsdlM = tM*dsdM/sigM;
@@ -767,14 +770,24 @@ class Cosmology:
             return sig,dsdm
 
 
-    def cumulativeHaloCount(self,z,mass,massfcn='PS'):
+    def cumulativeHaloCount(self,z,mass,massfcn='PS',invert=False):
         """ Integrate mass function to return the total number density of
-        halos up to a given mass """
+        halos up to a given mass
 
-        mlow=log(self.coolMass(z))
-        mhigh=log(mass)
+        with invert=True calculate n(M>mass) instead of n(M<mass)
+        """
+        print mass
+
+        if invert:
+            mlow=log(mass)
+            mhigh=scipy.inf
+        else:
+            mlow=log(self.coolMass(z))
+            mhigh=log(mass)
+        
         if mhigh<mlow:
-            raise Exception("mass is lower than cooling mass in cumulativeHaloCount")
+            #case where mass is lower than cooling mass
+            return 0.0
 
         nTot=scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn),mlow,mhigh)
 

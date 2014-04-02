@@ -16,4 +16,5 @@ import fishercl
 import fisherlf
 import fishertb
 #import fisherpk
+import luminosityfunction
 
