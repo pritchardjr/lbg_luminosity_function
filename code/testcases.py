@@ -33,13 +33,18 @@ def halotest():
 
     plt.show()
 
-def halomatch(M= -15):
+def halomatch(M= -15,massfcn='PS'):
     cosm=CC.Cosmology()
     LF=CLF.LuminosityFunction()
     z=2
 
     ngal=LF.numberdensityM(M)
+
+    if ngal>cosm.nCollObject(z,cosm.CoolMass(z),massfcn):
+        #limit galaxies to above the cooling mass
+        return None
+    
     mass=cosm.halomatch(z,ngal,'PS')
 
-    print mass, cosm.nCollObject(z,mass,'PS'),ngal
+    print mass, cosm.nCollObject(z,mass,massfcn),ngal
     return mass

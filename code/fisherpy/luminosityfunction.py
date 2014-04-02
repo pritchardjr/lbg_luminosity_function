@@ -91,10 +91,10 @@ class LuminosityFunction:
         phi*=np.exp(-np.exp(-0.4*(M-self.M0)*np.log(10.0)))
         return phi
 
-    def numberdensityM(self,Mmin):
+    def numberdensityM(self,Mmin,myinf=-50.0):
         """ galaxies per Mpc^3 brighter than Mmin i.e. more negative M"""
-        myinf= -np.inf
-        myinf= -50.0
+        #myinf= -np.inf
+        #myinf= -50.0
         ngal,error=scipy.integrate.quad(lambda x: self.luminosityFunctionM(x),myinf,Mmin)
         return ngal
 
@@ -138,10 +138,32 @@ class LuminosityFunction:
         M=m+5.0*-5.0*log10(dL)+2.5*log10(1+z)
         return M   
 
-    def halomatch(self,M,cosm):
-        """ find the halo mass corresponding to a given galaxy magnitude M
-        by matching the numberdensities n_LF(M)=n_h(mass)
+    def halomatch(self,M,cosm,massfcn='PS'):
         """
+        Perform halo matching between the luminosity function and the
+        cosmological halo mass function with the assumption that
+        numberdensities should match ie n_LF(<M)=n_h(>mass)
+        to obtain the halo mass corresponding to galaxy magnitude M
+        """
+        ngal=self.numberdensityM(M)
 
-        nLF=self.numberdensityM(M)
-        f=lambda x: cosm.cumulativeHaloCount(x)
+        #limit galaxies to above the cooling mass
+        if ngal>cosm.nCollObject(self.z,cosm.coolMass(self.z),massfcn):    
+            return None
+    
+        mass=cosm.halomatch(self.z,ngal,massfcn)
+
+        #print mass, cosm.nCollObject(self.z,mass,massfcn),ngal
+        return mass
+
+    def numberdensityInMBin(self,Mi,DeltaM):
+        """
+        Calculate the number density in a Magnitude bin
+        from M_i-DeltaM/2 to M_i+Delta_M/2
+
+        i.e. \bar(n)=\int \Phi(M) dM
+        """
+        Mlow=Mi-DeltaM/2.0
+        Mhigh=Mi+DeltaM/2.0
+        ngal=self.numberdensityM(Mlow,Mhigh)
+        return ngal

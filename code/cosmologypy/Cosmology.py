@@ -517,6 +517,20 @@ class Cosmology:
 ############################################################
     # Bias Calculations 
 ###########################################################
+
+    def biasHalo(self,mass,z,massfcn='PS'):
+        if massfcn is 'PS':
+            bias=self.biasmPS(mass,z)
+        elif massfcn is 'ST':
+            bias=self.biasmST(mass,z)
+        elif massfcn is 'TK':
+            bias=self.biasmTinker(mass,z)
+        else:
+            print "bias for massfcn="+massfcn+" is undefined"
+            bias=0
+
+        return bias
+            
     def biasPS(self,mass,z):
         """
         Linear bias as a function of halo mass for Press-Shechter halos. 
@@ -578,6 +592,25 @@ class Cosmology:
         
         return bias
 
+    def biasInBin(self,z,massi,deltam,massfcn='PS'):
+        """
+        Calculate the number weighted average bias in a mass bin from
+        mi-deltam/2.0 to mi+deltam/2.0
+
+        i.e. \bar(b)_i=[\int dm b(m) dn/dm]/[\int dn/dm]
+        """
+
+        masslow=massi-deltam/2.0
+        masshigh=massi+deltam/2.0
+
+        bkernal=lambda x: self.biasHalo(x,z,massfcn)*self.dndlM(z,x,massfcn)/x
+        nkernal=lambda x: self.dndlM(z,x,massfcn)/x
+
+        bias=scipy.integrate.quad(bkernal,masslow,masshigh,epsabs=1.0e-4)[0]
+        bias/=scipy.integrate.quad(nkernal,masslow,masshigh,epsabs=1.0e-4)[0]
+
+        return bias
+
 
 ############################################################
     # Press-Schechter functions ***********************
@@ -589,6 +622,12 @@ class Cosmology:
     # function comes ultimately from Wayne Hu's website.
 
     def dndlM(self,z,tM,massfcn='PS'):
+        """
+        PS=Press-Schecter
+        ST=Sheth-Torman
+        JN=Jenkins
+        TK=Tinker
+        """
 
         if massfcn is 'PS':
             tdn=self.dndlMPress(z,tM)
@@ -596,6 +635,8 @@ class Cosmology:
             tdn=self.dndlMSheth(z,tM)
         elif massfcn is 'JN':
             tdn=self.dndlMJenkins(z,tM)
+        elif massfcn is 'TK':
+            tdn=self.dndlMTinker(z,tM)
         else:
             raise Exception("Mass function - "+massfcn+" - is not defined")
             
@@ -649,6 +690,34 @@ class Cosmology:
         nuc = dCritZ/sigM;
         tdn = A*sqrt(2.0*a/pi)*fabs(dlsdlM)/tM*nuc*(1.0+pow(nuc*nuc*a,-p));
         tdn *= exp(-a*nuc*nuc/2.0);
+        tdn *= CRITDENMSOLMPC*self.Omegamhh;
+        return tdn;
+
+    def dndlMTinker(self,z,tM):
+        """    Calculates Tinker+ (2008) mass function
+        Takes form dh/dlm= rho f(nu)dnu/dm
+        
+        with nu=deltac/D(z)sigma(m)
+        and f(nu)=alpha[1+(beta*nu)^-2phi]nu^(2*eta)exp(-gamma*nu^2/2)
+
+        From fits to DElta=200 halos in a simulation at z=2.5
+        
+        tM = halo mass (Msun)"""
+        alpha=0.245
+        beta=0.757
+        gamma=0.853
+        phi=-0.659
+        eta=-0.341
+
+        dCritZ = self.delCrit0(z)/self.growthFac(z);
+        #sigM,dsdM = self.sigma0fM(tM,1);
+        sigM,dsdM = self.sigm(tM,1);
+        dlsdlM = tM*dsdM/sigM;
+        nuc = dCritZ/sigM;
+        tdn = alpha*fabs(dlsdlM)/tM*nuc
+        tdn *= 1.0+pow(beta*nuc,-2.0*phi)
+        tdn *= pow(nuc,2.0*eta)
+        tdn *= exp(-gamma*nuc*nuc/2.0)
         tdn *= CRITDENMSOLMPC*self.Omegamhh;
         return tdn;
 
