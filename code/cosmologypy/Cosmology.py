@@ -336,6 +336,48 @@ class Cosmology:
         ans = erfc(dCritZ/sqrt(2.0)/sigma);
         return ans;
 
+
+
+
+    """Calculates fraction of mass in galaxies by directly integrating the
+    mass function (using setFCollInt).  
+    z = redshift
+    mMin = minimum mass; if <0 use Tvir=10^4 K (optional)
+    massFcn = which mass function to use; 0=PS,1=ST,2=Jenkins (optional) 
+    """
+    def fColl(self,z,mMin=None,massfcn='PS'):
+        ans = 0.0;
+        if mMin is None:
+            mMin = self.coolMass(z);
+        while (1):
+            mMax = mMin*10.0;
+            oldAns = ans;
+            ans += scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn),mMin,mMax,epsabs=1.0e-4)[0];
+            if (fabs(ans-oldAns)/ans < 1.0e-4):
+                break;
+            mMin = mMax;
+  
+        ans /= CRITDENMSOLMPC*self.getOmega0hh();
+        return ans;
+
+
+    
+    """ Calculates number of objects above mMin.  If mMin < 0.0, assumes it is 
+    minimum cooling mass (this is an optional parameter). Only set up
+    for PS mass function. """
+    def nCollObject(self,z,mMin=None,massfcn='PS'):
+        ans = 0.0;
+        if mMin is None:
+            mMin = self.coolMass(z);
+        while (1):
+            mMax = mMin*10.0;
+            oldAns = ans;
+            ans += scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn)/x,mMin,mMax,epsabs=1.0e-4)[0]
+            if (fabs(ans-oldAns)/ans < 1.0e-4):
+                break;
+            mMin = mMax;
+        return ans;
+
 #######################################################################
 #####Power Spectrum Functions - originally from S. Furlanetto
 #######################################################################
@@ -543,7 +585,8 @@ class Cosmology:
         tdn = dn/dlogM= M*dn/dM (Mpc^-3)
         """
         dCritZ = self.delCrit0(z)/self.growthFac(z);
-        sigM,dsdM = self.sigma0fM(tM,True);
+        #sigM,dsdM = self.sigma0fM(tM,True);
+        sigM,dsdM = self.sigm(tM,1);
         dlsdlM = tM*dsdM/sigM;
         tdn = (sqrt(2.0/pi)*dCritZ*fabs(dlsdlM)*exp(-dCritZ*dCritZ/(2.0*sigM*sigM))/(tM*sigM));
         tdn *= CRITDENMSOLMPC*self.Omegamhh;
@@ -557,7 +600,8 @@ class Cosmology:
         p=0.3
 
         dCritZ = self.delCrit0(z)/self.growthFac(z);
-        sigM,dsdM = self.sigma0fM(tM,1);
+        #sigM,dsdM = self.sigma0fM(tM,1);
+        sigM,dsdM = self.sigm(tM,1);
         dlsdlM = tM*dsdM/sigM;
         nuc = dCritZ/sigM;
         tdn = A*sqrt(2.0*a/pi)*fabs(dlsdlM)/tM*nuc*(1.0+pow(nuc*nuc*a,-p));
@@ -575,7 +619,8 @@ class Cosmology:
         p=0.175
 
         dCritZ = self.delCrit0(z)/self.growthFac(z);
-        sigM,dsdM = self.sigma0fM(tM,1);
+        #sigM,dsdM = self.sigma0fM(tM,1);
+        sigM,dsdM = self.sigm(tM,1);
         dlsdlM = tM*dsdM/sigM;
         nuc = dCritZ/sigM;
         tdn = A*sqrt(2.0*a/pi)*fabs(dlsdlM)/tM*nuc*(1.0+pow(nuc*nuc*a,-p));
@@ -776,12 +821,14 @@ class Cosmology:
 
         with invert=True calculate n(M>mass) instead of n(M<mass)
         """
-        print mass
+        print "SLOW!!!"
 
         if invert:
+            #calculate n(M>mass)
             mlow=log(mass)
-            mhigh=scipy.inf
+            mhigh=log(1.0e30)
         else:
+            #calculate n(M<mass)
             mlow=log(self.coolMass(z))
             mhigh=log(mass)
         
@@ -789,7 +836,7 @@ class Cosmology:
             #case where mass is lower than cooling mass
             return 0.0
 
-        nTot=scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn),mlow,mhigh)
+        nTot=scipy.integrate.quad(lambda x: self.dndlM(z,exp(x),massfcn),mlow,mhigh)
 
         return nTot[0]
 
