@@ -342,8 +342,8 @@ class Cosmology:
     """Calculates fraction of mass in galaxies by directly integrating the
     mass function (using setFCollInt).  
     z = redshift
-    mMin = minimum mass; if <0 use Tvir=10^4 K (optional)
-    massFcn = which mass function to use; 0=PS,1=ST,2=Jenkins (optional) 
+    mMin = minimum mass; if None use Tvir=10^4 K (optional)
+    massFcn = which mass function to use; PS=Press-Schecter,ST=Sheth-Torman,JN=Jenkins 
     """
     def fColl(self,z,mMin=None,massfcn='PS'):
         ans = 0.0;
@@ -362,9 +362,10 @@ class Cosmology:
 
 
     
-    """ Calculates number of objects above mMin.  If mMin < 0.0, assumes it is 
-    minimum cooling mass (this is an optional parameter). Only set up
-    for PS mass function. """
+    """ Calculates number of objects above mMin.
+    If mMin is None, assumes it is minimum cooling mass
+    massfcn = 'PS', 'ST', 'JN'
+    """
     def nCollObject(self,z,mMin=None,massfcn='PS'):
         ans = 0.0;
         if mMin is None:
@@ -813,32 +814,6 @@ class Cosmology:
             return sig;
         else:
             return sig,dsdm
-
-
-    def cumulativeHaloCount(self,z,mass,massfcn='PS',invert=False):
-        """ Integrate mass function to return the total number density of
-        halos up to a given mass
-
-        with invert=True calculate n(M>mass) instead of n(M<mass)
-        """
-        print "SLOW!!!"
-
-        if invert:
-            #calculate n(M>mass)
-            mlow=log(mass)
-            mhigh=log(1.0e30)
-        else:
-            #calculate n(M<mass)
-            mlow=log(self.coolMass(z))
-            mhigh=log(mass)
-        
-        if mhigh<mlow:
-            #case where mass is lower than cooling mass
-            return 0.0
-
-        nTot=scipy.integrate.quad(lambda x: self.dndlM(z,exp(x),massfcn),mlow,mhigh)
-
-        return nTot[0]
 
 ###########################################################
 ############## Halo Charactetics
