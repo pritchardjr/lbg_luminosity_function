@@ -12,18 +12,9 @@ from fisher import Fisher
 import scipy
 import luminosityfunction as CLF
 
-
-class FisherLF(Fisher):
-    """ Fisher class for Galaxy Luminosity Function derived calculations """
-    def __init__(self,paramdict={'oml':0.7,'hubble':0.7,'omm':0.3,'omk':0.0,'Ombhh':0.0225,'nscal':0.95,'Ascal':25.0}):
-        Fisher.__init__(self,paramdict)
-        self._fishertype="FisherCL"
-
-    def calcFisherMatrix(self):
-        #self._fisher=np.identity(self._nparam)
-        raise Exception("calcFisherMatrix not defined")
-
 ################################################################
+# Define class for Galaxy survey parameters
+############################################################
 
 class GalaxySurvey:
     """ Class for galaxy survey and its properties
@@ -42,6 +33,8 @@ class GalaxySurvey:
         self.nfield=nfield
         self.nbin=nbin
 
+        self.z=(self.zmin+self.zmax)/2.0
+
     def __repr__(self):
         return "%s z=[%g,%g]; theta=[%g,%g]; nfield=%g; nbin=%g; maglim=%g" % (self.name,self.zmin,self.zmax,self.anglex,self.angley,self.nfield,self.nbin,self.maglim)
 
@@ -59,6 +52,43 @@ class GalaxySurvey:
         vol*=self.areaSTER()/(4.0*math.pi)*self.nfield;
         return vol
 
+
+############################################################
+#Create Fisher matrix for galaxy LF constraints following Robertson (2010)
+############################################################
+class FisherLF(Fisher):
+    """ Fisher class for Galaxy Luminosity Function derived calculations """
+    def __init__(self,paramdict={'oml':0.7,'hubble':0.7,'omm':0.3,'omk':0.0,'ombhh':0.0225,'nscal':0.95,'ascal':25.0},survey=GalaxySurvey()):
+        Fisher.__init__(self,paramdict)
+        self._fishertype="FisherCL"
+        self.survey=survey
+
+        #calculate fiducial cosmology
+        cosm=CCosm.Cosmology()
+
+        #use fiducial cosmology to map survey parameters to comoving distances
+        self.survey_r=cosm.comovingDistance(survey.z)
+        self.survey_deltar=abs(cosm.comovingDistance(survey.zmax)-cosm.comovingDistance(survey.zmin))
+
+    def calcFisherMatrix(self):
+        #self._fisher=np.identity(self._nparam)
+        raise Exception("calcFisherMatrix not defined")
+
+    def covarianceMatrix(i,j,cosm):
+        
+        Sij=bi*bj*ni*nj/self.survey.nfield
+        Sij*=pow(cosm.growthFac(z),2.0)
+
+        #now return 3D integral over P(k)
+        
+
+        return Sij
+
+    def window(self,kx,ky,kz):
+        sinc=lambda x: sin(x)/x
+        WV=sinc(kx*self.survey_r*self.survey.anglex/2.0)
+        WV*=sinc(ky*self.survey_r*self.survey.angley/2.0)
+        WV*=sinc(kz*self.survey_deltar/2.0)
 
         
 ############################################################

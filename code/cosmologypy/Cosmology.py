@@ -20,18 +20,44 @@ class Cosmology:
     """
     
     #def __init__(self,Omegam=0.3,Omegal=0.7,Omegak=0.0,Omegabhh=0.0225,hubble=0.7,nscal=0.95,Ascal=25.0,sigma8=0.9):
-    def __init__(self,Omegam=0.3,Omegal=0.7,Omegak=0.0,Omegabhh=0.046*0.7*0.7,hubble=0.7,nscal=1.0,Ascal=25.0,sigma8=0.9):        
+    def __init__(self,Omegam=0.3,Omegal=0.7,Omegak=0.0,Omegabhh=0.046*0.7*0.7,hubble=0.7,nscal=1.0,Ascal=25.0,sigma8=0.9,paramdict=None):        
         """ Initialise the cosmological parameters: defaults specified"""
         #Establish core cosmological parameter set
-        self.Omegam=Omegam
-        self.Omegal=Omegal
-        self.Omegak=Omegak
-        self.hubble=hubble
-        self.Omegabhh=Omegabhh
-        self.nscal=nscal
-        self.Ascal=Ascal*1.0e-10
-        self.sigma8=sigma8
+        if paramdict is None:
+            self.Omegam=Omegam
+            self.Omegal=Omegal
+            self.Omegak=Omegak
+            self.hubble=hubble
+            self.Omegabhh=Omegabhh
+            self.nscal=nscal
+            self.Ascal=Ascal*1.0e-10
+            self.sigma8=sigma8
 
+        else:
+            #get parameters from dictionary according to one of two formats
+            if 'Omegam' in paramdict:
+                self.Omegam=paramdict['Omegam']
+                self.Omegal=paramdict['Omegal']
+                self.Omegak=paramdict['Omegak']
+                self.hubble=paramdict['hubble']
+                self.Omegabhh=paramdict['Omegabhh']
+                self.hubble=paramdict['hubble']
+                self.nscal=paramdict['nscal']
+                self.Ascal=paramdict['Ascal']
+            elif 'omm' in paramdict:
+                self.Omegam=paramdict['omm']
+                self.Omegal=paramdict['oml']
+                self.Omegak=paramdict['omkk']
+                self.hubble=paramdict['hubble']
+                self.Omegabhh=paramdict['ombhh']
+                self.hubble=paramdict['hubble']
+                self.nscal=paramdict['nscal']
+                self.Ascal=paramdict['ascal']
+            else:
+                raise Exception('Invalid paramdict')
+
+
+        #dark energy
         self.w= -1
 
         #Basic derived quantities
