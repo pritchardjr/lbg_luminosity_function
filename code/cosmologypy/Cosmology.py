@@ -44,15 +44,17 @@ class Cosmology:
                 self.hubble=paramdict['hubble']
                 self.nscal=paramdict['nscal']
                 self.Ascal=paramdict['Ascal']
+                self.sigma8=paramdict['sigma8']
             elif 'omm' in paramdict:
                 self.Omegam=paramdict['omm']
                 self.Omegal=paramdict['oml']
-                self.Omegak=paramdict['omkk']
+                self.Omegak=paramdict['omk']
                 self.hubble=paramdict['hubble']
                 self.Omegabhh=paramdict['ombhh']
                 self.hubble=paramdict['hubble']
                 self.nscal=paramdict['nscal']
                 self.Ascal=paramdict['ascal']
+                self.sigma8=paramdict['sig8']
             else:
                 raise Exception('Invalid paramdict')
 
@@ -190,7 +192,7 @@ class Cosmology:
 
     def comovingVolumeElement(self,z):
         """ comoving volume element dVol/dz/dOmega in Mpc^3 """
-        return math.pow(self.comovingDistance(z),2)/self.hubbleZMPC(z)
+        return pow(self.comovingDistance(z),2)/self.hubbleZMPC(z)
 
     def comovingVolumeToZ(self,z):
         """ total comoving volume from z=0 to z=z
@@ -201,7 +203,7 @@ class Cosmology:
     def comovingVolume(self,z2,z1=0.0):
         """ total comoving volume from z1 to z2 in Mpc^3 """
         volume,error=scipy.integrate.quad(self.comovingVolumeElement,z1,z2)
-        return volume*4.0*math.pi
+        return volume*4.0*pi
 
     def distanceModulus(self,z):
         """ Calculate the distance modulus mu=5 log_10(dL/10pc)"""
@@ -618,7 +620,7 @@ class Cosmology:
         
         return bias
 
-    def biasInBin(self,z,massi,deltam,massfcn='PS'):
+    def biasInBin(self,z,masslow,masshigh,massfcn='PS'):
         """
         Calculate the number weighted average bias in a mass bin from
         mi-deltam/2.0 to mi+deltam/2.0
@@ -626,8 +628,8 @@ class Cosmology:
         i.e. \bar(b)_i=[\int dm b(m) dn/dm]/[\int dn/dm]
         """
 
-        masslow=massi-deltam/2.0
-        masshigh=massi+deltam/2.0
+        #masslow=massi-deltam/2.0
+        #masshigh=massi+deltam/2.0
 
         bkernal=lambda x: self.biasHalo(x,z,massfcn)*self.dndlM(z,x,massfcn)/x
         nkernal=lambda x: self.dndlM(z,x,massfcn)/x

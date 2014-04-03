@@ -148,7 +148,8 @@ class LuminosityFunction:
         ngal=self.numberdensityM(M)
 
         #limit galaxies to above the cooling mass
-        if ngal>cosm.nCollObject(self.z,cosm.coolMass(self.z),massfcn):    
+        if ngal>cosm.nCollObject(self.z,cosm.coolMass(self.z),massfcn):
+            print "too many galaxies"
             return None
     
         mass=cosm.halomatch(self.z,ngal,massfcn)
