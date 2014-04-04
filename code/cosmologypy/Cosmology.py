@@ -401,7 +401,7 @@ class Cosmology:
         while (1):
             mMax = mMin*10.0;
             oldAns = ans;
-            ans += scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn)/x,mMin,mMax,epsabs=1.0e-4)[0]
+            ans += scipy.integrate.quad(lambda x: self.dndlM(z,x,massfcn)/x,mMin,mMax,epsrel=1.0e-4)[0]
             if (fabs(ans-oldAns)/ans < 1.0e-4):
                 break;
             mMin = mMax;
@@ -424,7 +424,7 @@ class Cosmology:
             mmax/=10.0
             lim=self.dndlM(z,mmax,massfcn)
         
-        mass=scipy.optimize.brentq(lambda x:self.nCollObject(z,x,massfcn)-ngal,mmin,mmax)
+        mass=scipy.optimize.brentq(lambda x:self.nCollObject(z,x,massfcn)-ngal,mmin,mmax,rtol=1.0e-4)
 
         #print mass, cosm.nCollObject(z,mass,'PS'),ngal
         return mass

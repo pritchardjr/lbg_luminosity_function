@@ -81,7 +81,7 @@ class FisherLF(Fisher):
         # take brightest magnitude to be arbitrarily high
         self.deltaMag=0.25
         self.magmax=survey.maglim #faintest objects in survey
-        magmin= -30.0 #brightest possible
+        magmin= -29.0 #brightest possible
         self.Nbin= int((self.magmax-magmin)/self.deltaMag)
         self.magbins=self.magmax-np.arange(self.Nbin)*self.deltaMag
         self.magmin=self.magbins[-1]
