@@ -1,0 +1,183 @@
+noteq
+        macro read notebook_qso.sm
+
+bolotest
+        window 1 1 1 1
+        limits 8.5 14 0 2.2
+        ticksize 0.1 1 -1 10
+        box
+        xlabel log(Lbol/Lsun)
+        ylabel Bolometric correction (Lbol/Lband)
+
+        data "./bolo_test.dat"
+        read {L 1 Lband 2}
+
+        connect (lg(L)) (lg(L/Lband))
+
+
+lfparam
+        window 2 2 1 2
+        limits 0 6 -0.25 1.25
+        ticksize 1 1 0.05 0.2
+        box
+        xlabel z
+        ylabel gamma1
+
+        ltype 1
+        data "./qso_lf_z_ple.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) gamma1
+
+        ltype 0
+        data "./qso_lf_z_full.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) gamma1
+
+        window 2 2 2 2
+        limits 0 6 1.0 2.7
+        ticksize 1 1 0.1 0.5
+        box
+        xlabel z
+        ylabel gamma2
+
+        ltype 1
+        data "./qso_lf_z_ple.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) gamma2
+
+        ltype 0
+        data "./qso_lf_z_full.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) gamma2
+
+        ctype red
+        set xref=(1+z)/(1+2)
+        set gamma2=2.0*2.1744386/(xref**1.4599393+xref**-0.79280099)
+        connect z gamma2
+        ctype black
+
+        window 2 2 1 1
+        limits 0 6 11.2 13.3
+        ticksize 1 1 0.1 0.5
+        box
+        xlabel z
+        ylabel log(L0)
+
+        ltype 1
+        data "./qso_lf_z_ple.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) lL0
+
+        ltype 0
+        data "./qso_lf_z_full.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) lL0
+
+        window 2 2 2 1
+        limits 0 6 -5.7 -3.8
+        ticksize 1 1 0.1 0.5
+        box
+        xlabel z
+        ylabel log(phi0)
+
+        ltype 1
+        data "./qso_lf_z_ple.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) lphi0
+
+        ltype 0
+        data "./qso_lf_z_full.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5}
+        connect (z) lphi0
+
+nqso
+        window 1 1 1 1
+        limits 0 6 -9.6 -5.0
+        ticksize 1 1 0.1 0.5
+        box
+        xlabel z
+        ylabel log(phi0)
+
+        ltype 1
+        data "./qso_lf_z_ple.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5 n 6}
+        connect (z) n
+
+        ltype 0
+        data "./qso_lf_z_full.dat"
+        read {z 1 lL0 2 lphi0 3 gamma1 4 gamma2 5 n 6}
+        connect (z) n
+
+dndL
+        window 1 1 1 1
+        limits 8 16 -11 -2.0
+        ticksize -1 10 -1 10
+        location $(5500) $gx2 $gy1 $gy2
+        notation -2 2 -2 2
+        box
+        xlabel L
+        ylabel \phi(L) [Mpc^{-3} log(L)^{-1}]
+
+        ltype 1
+        data "./qso_lf_L_ple_z4.dat"
+        read {L 1 dndL 2 ldndL 3}
+        connect (lg(L)) (lg(dndL))       
+
+        ltype 0
+        data "./qso_lf_L_full_z4.dat"
+        read {L 1 dndL 2 ldndL 3}
+        connect (lg(L)) (lg(dndL))  
+
+        relocate (7000 7000)
+        label z=4
+
+dndL_mb
+        window 1 1 1 1
+        limits -18 -29.5 -11 -2.0
+        ticksize 0.5 2 -1 10
+        location $(5500) $gx2 $gy1 $gy2
+        notation -2 2 -2 2
+        box
+        xlabel M_B
+        ylabel \phi(L) [Mpc^{-3} log(L)^{-1}]
+
+        ltype 1
+        data "./qso_lf_L_ple_z4.dat"
+        read {L 1 dndL 2 ldndL 3 mb 4 dndLB 5}
+        connect (mb) (lg(dndL))       
+
+        ltype 0
+        data "./qso_lf_L_full_z4.dat"
+        read {L 1 dndL 2 ldndL 3 mb 4 dndLB 5}
+        connect (mb) (lg(dndL))  
+
+        relocate (7000 7000)
+        label z=4
+
+magB
+        window 1 1 1 1
+        limits 8 18 -40 -12
+        ticksize -1 10 0.5 2
+        location $(5500) $gx2 $gy1 $gy2
+        notation -2 2 -2 2
+        box
+        xlabel L/Lsol
+        ylabel M_B
+
+        ltype 0
+        data "./qso_lf_L_full_z4.dat"
+        read {L 1 dndL 2 ldndL 3 mb 4}
+        connect (lg(L)) (mb)     
+
+        ltype 1
+        data "./Bmagnitude.dat"
+        read {mb 1 Lnu 2 L 3}
+        connect (lg(L)) (mb)
+
+        horizontal -27
+        vertical 13.5
+
+        ltype 0          
+
+
+

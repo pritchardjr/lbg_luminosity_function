@@ -4,3 +4,8 @@
 *.bbl
 *.blg
 *.log
+
+*.o
+*.x
+*.dat
+*.mod

@@ -1,0 +1,58 @@
+notep
+	expand 1.6
+	lweight 4
+	macro read notebook_paper.sm
+
+wmap_tau
+	window 1 2 1 2
+        location $(4500) $gx2 $gy1 $gy2
+	limits 0 0.3 0 2.5
+	ticksize 0.01 0.05 0.5 0.5
+	box 1 0 0 0
+	expand 2
+	xlabel \tau	
+	expand 1.6
+
+	ptype 4 1
+
+	set dimen(wtau)=1
+	set dimen(nexp)=1
+	set dimen(err)=1
+
+
+	set wtau[0]=0.166
+	set nexp[0]=0.5
+	set err[0]=0.076
+	points wtau nexp
+	errorbar wtau nexp err 1
+	set err[0]=0.071
+	errorbar wtau nexp err 3
+
+	set wtau[0]=0.09
+	set nexp[0]=1
+	set err[0]=0.03
+	points wtau nexp
+	errorbar wtau nexp err 1
+	errorbar wtau nexp err 3
+
+	set wtau[0]=0.087
+	set nexp[0]=1.5
+	set err[0]=0.017
+	points wtau nexp
+	errorbar wtau nexp err 1
+	errorbar wtau nexp err 3
+
+	set wtau[0]=0.087
+	set nexp[0]=2.0
+	set err[0]=0.005
+	errorbar wtau nexp err 1
+	errorbar wtau nexp err 3
+
+	relocate (50 21500)
+	label WMAP1
+	relocate (50 24000)
+	label WMAP3
+	relocate (50 26500)
+	label WMAP5
+	relocate (50 29000)
+	label Planck

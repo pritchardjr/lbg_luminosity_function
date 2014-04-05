@@ -1,0 +1,7 @@
+CAMB modifications:
+
+modules.f90
+subroutine Transfer_output_Sig8(MTrans)
+
+-comment out line that writes sigma8 with text
+-add line to just write out sigma8 

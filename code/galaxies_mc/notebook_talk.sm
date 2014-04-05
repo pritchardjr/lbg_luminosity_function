@@ -1,0 +1,93 @@
+notet
+        macro read notebook_talk.sm
+        expand 1.4
+        lweight 4
+
+
+tempcomp_high
+        window 1 -2 1 2
+        limits 1.8 15 0 35
+        ticksize 0.5 2 2 10
+        box
+        xlabel z
+        ylabel T_0 [10^3 K]
+        
+        
+        data "temp_schaye.dat"
+        read {z 1 T 2 sigT 3 beta 4 sigB 5}
+        set T=T/1e3
+        set sigT=sigT/1e3
+        points z T
+        errorbar z T sigT 2
+        errorbar z T sigT 4
+
+        ctype red
+        data "temp_ricotti.dat"
+        read {z 1 T 2 sigT 3 beta 4 sigB 5}
+        set T=T/1e3
+        set sigT=sigT/1e3
+        errorbar z T sigT 2
+        errorbar z T sigT 4
+
+        ctype blue
+        data "temp_mcdonald.dat"
+        read {z 1 T 2 sigT 3 beta 4 sigB 5}
+        set T=T/1e3
+        set sigT=sigT/1e3
+        errorbar z T sigT 2
+        errorbar z T sigT 4
+        ctype black
+
+        ctype green
+        data "temp_zaldarriaga.dat"
+        read {z 1 T 2 sigT 3}
+        set T=T/1e3
+        set sigT=sigT/1e3
+        errorbar z T sigT 2
+        errorbar z T sigT 4
+        ctype black
+
+        ctype black
+        ltype 1
+        set dimen(z)=1
+        set dimen(T)=1
+        set dimen(errp)=1
+        set dimen(errm)=1
+        set z=6
+        set T=23.6
+        set errp=5
+        set errm=6.9
+        errorbar z T errp 2
+        errorbar z T errm 4
+        ctype black
+        ltype 0
+
+        expand 0.8
+        ctype black
+        relocate (21000 29000)
+        label Schaye (2000)
+        ctype red
+        relocate (21000 28000)
+        label Ricotti (2000)
+        ctype blue
+        relocate (21000 27000)
+        label McDonald (2001)
+        ctype green
+        relocate (21000 26000)
+        label Zaldarriaga (2001)
+        ctype black
+        expand 1.4
+
+        ltype 2
+        data "./data_temp/cosmology_fiducial_p.dat"
+        read {nu 1 xi 4 tk 6}
+        set nu21=1400e6
+        set z=nu21/nu-1
+
+        connect z (tk/1e3) if(z>6)
+        set dimen(z)=2
+        set z[0]=2
+        set z[1]=6.5
+        set tk=(20*z/z)
+        #connect z tk
+        ltype 0

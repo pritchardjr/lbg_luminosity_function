@@ -1,0 +1,1882 @@
+notel
+	expand 1.6
+	lweight 4
+	macro read notebook_nolls.sm
+
+wmap_tau
+	window 1 1 1 1
+        location $(4500) $gx2 $gy1 $gy2
+	limits 0 0.3 0 2.2
+	ticksize 0.01 0.05 0.5 0.5
+	box 1 0 0 0
+	expand 2
+	xlabel \tau	
+	expand 1.6
+
+	ptype 4 1
+
+	set dimen(wtau)=1
+	set dimen(nexp)=1
+	set dimen(err)=1
+
+
+	set wtau[0]=0.166
+	set nexp[0]=0.5
+	set err[0]=0.076
+	points wtau nexp
+	errorbar wtau nexp err 1
+	set err[0]=0.071
+	errorbar wtau nexp err 3
+
+	set wtau[0]=0.09
+	set nexp[0]=1
+	set err[0]=0.03
+	points wtau nexp
+	errorbar wtau nexp err 1
+	errorbar wtau nexp err 3
+
+	set wtau[0]=0.087
+	set nexp[0]=1.5
+	set err[0]=0.017
+	points wtau nexp
+	errorbar wtau nexp err 1
+	errorbar wtau nexp err 3
+
+	set wtau[0]=0.087
+	set nexp[0]=2.0
+	set err[0]=0.005
+	errorbar wtau nexp err 1
+	errorbar wtau nexp err 3
+
+	relocate (50 9500)
+	label WMAP1
+	relocate (50 15500)
+	label WMAP3
+	relocate (50 21750)
+	label WMAP5
+	relocate (50 28000)
+	label Planck
+	
+
+mfp
+	window 1 1 1 1
+	location $(4500) $gx2 $gy1 $gy2
+	limits -1.5 2.5 1 4.5
+	ticksize -1 10 -1 10
+	box
+
+	xlabel \Gamma_{-12}
+	ylabel \lambda_{mfp} [comoving Mpc]
+
+	ltype 0
+	data mfp_6.dat
+	read {gam 1 mfp 3}
+	logconnect gam mfp
+
+	ltype 1
+	data mfp_5.dat
+	read {gam 1 mfp 3}
+	logconnect gam mfp
+
+	ltype 2
+	data mfp_4.dat
+	read {gam 1 mfp 3}
+	logconnect gam mfp
+
+	ltype 5
+	data mfp_3.dat
+	read {gam 1 mfp 3}
+	logconnect gam mfp
+
+	ltype 4
+	data mfp_2.dat
+	read {gam 1 mfp 3}
+	logconnect gam mfp
+
+	ltype 0
+
+xhistory
+
+	data output.dat
+	lines 1 1 
+	read tauCMB 1
+	define tauCMB (tauCMB)
+
+	lines 2 0
+	read {z 1 nion 2 xi 3 gam 4}
+
+	window 1 -3 1 3
+	limits 2.5 20 0 2
+	notation -2 2 -2 2
+	ticksize 0 0 0 0
+
+	box 4 2 0 0
+	ylabel \Gamma_{-12} [10^{-12}s^{-1}]
+	connect z (gam) if(gam>0)
+
+	ctype blue
+	data gamma_bh07.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	errorbar zd gd abs(errd) 4
+	errorbar zd gd erru 2
+	ctype black
+
+	ctype red
+	data gamma_fg08.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	errorbar zd gd abs(errd) 4
+	errorbar zd gd erru 2
+	ctype black
+
+	window 1 -3 1 2
+	limits 2.5 20 48.9 51.9 
+
+	box 4 2 0 0
+	ylabel \dot{N}_{ion} [s^{-1} Mpc^{-3}]
+	connect z (lg(nion))
+
+	ctype blue
+	data nion_bh07.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	logerr zd (lg(gd)) (abs(errd)) 
+	logerr zd (lg(gd)) erru 
+	ctype black
+
+	ctype red
+	data nion_fg08.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	logerr zd (lg(gd)) (abs(errd)) 
+	logerr zd (lg(gd)) erru 
+	ctype black
+
+	window 1 -3 1 1
+	limits 2.5 20 -0.05 1.1
+
+	box
+	xlabel z
+	ylabel x_i
+	connect z xi
+
+#	vertical 6
+#	vertical 8
+
+	relocate (20000 29000)
+	label \tau=$tauCMB
+
+pdf
+	window 1 -2 1 2
+	limits 0 1 0 1
+	ticksize 0.05 0.2 0.05 0.2
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	data xi_pdf_z8.dat
+	read {xi 1 px 2}
+	
+	connect xi px
+
+	window 1 -2 1 1
+	limits 0 1 0 0.23
+	ticksize 0.05 0.2 0.025 0.1
+	box 
+	xlabel x_i
+	ylabel P(x_i)
+
+	data xi_pdf_z10.dat
+	read {xi 1 px 2}
+	
+	connect xi px
+
+	expand 2.5
+	relocate (6000 29000)
+	label z=8
+	relocate (6000 15000)
+	label z=10
+
+	expand 1.6
+
+chistory
+
+	data output.dat
+	lines 1 1 
+	read tauCMB 1
+	define tauCMB (tauCMB)
+
+	lines 2 0
+	read {z 1 nion 2 xi 3 gam 4 clump 6 clumpFO 8}
+
+	window 1 -2 1 2
+	location $(4500) $gx2 $gy1 $gy2
+	limits 4 20 -3 2
+	ticksize 1 5 -1 10
+	notation -2 2 0 1
+	box 4 2 0 0
+	ylabel Clumping
+
+	connect z (lg(clump))
+#	ctype red
+#	connect z (lg(clumpFO))
+#	ctype black
+
+	window 1 -2 1 1
+	location $(4500) $gx2 $gy1 $gy2
+	limits 4 20 -3 0.4
+	ticksize 1 5 -1 10
+	box
+	ylabel x_i
+	xlabel z
+
+	connect z (lg(xi))
+
+chistory2
+
+	data output.dat
+	lines 1 1 
+	read tauCMB 1
+	define tauCMB (tauCMB)
+
+	lines 2 0
+	read {z 1 nion 2 xi 3 gam 4 clump 6 clumpFO 8}
+
+	window 1 1 1 1
+	location $(4500) $gx2 $gy1 $gy2
+	limits -5 0.2 -3 2
+	ticksize -1 10 -1 10
+	notation -2 2 0 1
+	box
+	xlabel x_H
+	ylabel Clumping
+
+	logconnect (1-xi+1.0e-20) (clump+1.0e-10)
+	ctype red
+	logconnect (1-xi+1.0e-20) (clumpFO+1.0e-10)	
+	ctype black
+
+czeta_pdf
+	window 1 1 1 1
+	limits 30 80 0 0.3
+	ticksize 2 10 0.02 0.1
+	box
+	xlabel \zeta
+	ylabel P(\zeta)
+
+	ctype red
+	data "const_zeta/fg_data/zeta_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "const_zeta/bolton/zeta_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+czeta_xi
+	window 1 -3 1 3
+	limits 0 1.05 0 30
+	ticksize 0.05 0.2 5 10
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "const_zeta/fg_data/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "const_zeta/bolton/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -3 1 2
+	limits 0 1.05 0 30
+	ticksize 0.05 0.2 5 10
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "const_zeta/fg_data/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "const_zeta/bolton/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -3 1 1
+	limits 0 1.05 0 30
+	ticksize 0.05 0.2 5 10
+	box
+	ylabel P(x_i)
+	xlabel x_i
+
+	ctype red
+	data "const_zeta/fg_data/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "const_zeta/bolton/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	expand 2
+	relocate (6000 28000)
+	label z=8
+	relocate (6000 18000)
+	label z=9
+	relocate (6000 9000)
+	label z=10
+	expand 1.6
+
+	window 1 1 1 1
+
+
+twostep_pdf
+	window 1 2 1 2
+	location $(5500) $gx2 $gy1 $gy2
+	limits 30 80 0 0.3
+	ticksize 2 10 0.02 0.1
+	notation -2 2 -2 2
+	box
+	xlabel \zeta_0
+	ylabel P(\zeta_0)
+
+	ctype red
+	data "twostep/fg_data/zeta1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "twostep/wmap3/zeta1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "twostep/bolton/zeta1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	window 1 2 1 1
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0 300 0 0.008
+	ticksize 10 50 0.0005 0.002
+	notation -4 4 -4 4
+	box
+	xlabel \zeta_1
+	ylabel P(\zeta_1)
+
+	ctype red
+	data "twostep/fg_data/zeta2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "twostep/wmap3/zeta2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "twostep/bolton/zeta2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+twostep_pdf4
+	window 2 2 1 2
+	limits 0 50 0 0.3
+	ticksize 2 10 0.02 0.1
+	notation -2 2 -2 2
+	box
+	xlabel \zeta_0
+	ylabel P(\zeta_0)
+
+	ctype red
+	data "twostep/fg_data/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ltype 2
+	ctype green
+	data "twostep/planck/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+	ltype 0
+
+	ctype black
+	data "twostep/bolton/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	window 2 2 1 1
+	limits 0 400 0 0.02
+	ticksize 20 100 0.005 0.005
+	notation -4 4 -4 4
+	box
+	xlabel \zeta_1
+	ylabel P(\zeta_1)
+
+	ctype red
+	data "twostep/fg_data/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ltype 2
+	ctype green
+	data "twostep/planck/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+	ltype 0
+
+	ctype black
+	data "twostep/bolton/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	window 2 2 2 2
+	limits 4 20 0 0.7
+	ticksize 1 5 0.02 0.1
+	notation -4 4 -4 4
+	box
+	xlabel z_0
+	ylabel P(z_0)
+
+	ctype red
+	data "twostep/fg_data/no_lls/p3_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/p3_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ltype 2
+	ctype green
+	data "twostep/planck/no_lls/p3_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+	ltype 0
+
+	ctype black
+	data "twostep/bolton/no_lls/p3_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	window 2 2 2 1
+	limits 0 5 0 0.8
+	ticksize 0.5 1 0.05 0.2
+	notation -4 4 -4 4
+	box
+	xlabel \Delta z
+	ylabel P(\Delta z)
+
+	ctype red
+	data "twostep/fg_data/no_lls/p4_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/p4_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ltype 2
+	ctype green
+	data "twostep/planck/no_lls/p4_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+	ltype 0
+
+	ctype black
+	data "twostep/bolton/no_lls/p4_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+twostep_xi
+	window 1 -4 1 4
+	limits 0 1.05 0 15
+	ticksize 0.05 0.2 2 10
+	notation -2 2 -2 2
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "twostep/fg_data/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "twostep/bolton/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -4 1 3
+	limits 0 1.05 0 15
+	ticksize 0.05 0.2 2 10
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "twostep/fg_data/no_lls/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "twostep/bolton/no_lls/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -4 1 2
+	limits 0 1.05 0 6
+	ticksize 0.05 0.2 1 5
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "twostep/fg_data/no_lls/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "twostep/bolton/no_lls/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -4 1 1
+	limits 0 1.05 0 6
+	ticksize 0.05 0.2 1 5
+	box
+	ylabel P(x_i)
+	xlabel x_i
+
+	ctype red
+	data "twostep/fg_data/no_lls/xi_pdf_z11.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "twostep/wmap3/no_lls/xi_pdf_z11.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "twostep/bolton/no_lls/xi_pdf_z11.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	expand 2
+	relocate (6000 28000)
+	label z=8
+	relocate (6000 22000)
+	label z=9
+	relocate (6000 15000)
+	label z=10
+	relocate (6000 8000)
+	label z=11
+	expand 1.6
+
+	window 1 1 1 1
+
+plotcontour_twostep
+        window 1 1 1 1
+        ticksize 0 0 0 0
+        data "twostep/fg_data/likelihoodZeta_twostep.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        ctype red
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+        set x[0]=z1min
+        set x[1]=z1max
+        set y[0]=z2min
+        set y[1]=z2max
+
+        limits x y
+        box       
+        xlabel \zeta_0
+        ylabel \zeta_1
+
+        ctype blue
+        data "twostep/wmap3/likelihoodZeta_twostep.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+        set x[0]=z1min
+        set x[1]=z1max
+        set y[0]=z2min
+        set y[1]=z2max
+
+        limits x y
+        box       
+        xlabel \zeta_0
+        ylabel \zeta_1
+
+        ctype black
+
+        data "twostep/bolton/likelihoodZeta_twostep.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+        set x[0]=z1min
+        set x[1]=z1max
+        set y[0]=z2min
+        set y[1]=z2max
+
+        limits x y
+        box       
+        xlabel \zeta_0
+        ylabel \zeta_1
+
+plotcontour_ndot
+        window 1 1 1 1
+        ticksize 0 0 0 0
+        data "ndot/fg_data/likelihoodZeta_ndot.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        ctype red
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+        set x[0]=z1min
+        set x[1]=z1max
+        set y[0]=z2min
+        set y[1]=z2max
+
+        ctype black
+        limits x y
+        box       
+        xlabel N_{ion}
+        ylabel z_{max}
+
+        ctype blue
+        data "ndot/wmap3/likelihoodZeta_ndot.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        #set dimen(x)=2
+        #set y=x
+        #set x[0]=z1min
+        #set x[1]=z1max
+        #set y[0]=z2min
+        #set y[1]=z2max
+
+        #limits x y
+        #box       
+        #xlabel \zeta_0
+        #ylabel \zeta_1
+
+        ctype black
+
+        data "ndot/bolton/likelihoodZeta_ndot.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        #set dimen(x)=2
+        #set y=x
+        #set x[0]=z1min
+        #set x[1]=z1max
+        #set y[0]=z2min
+        #set y[1]=z2max
+
+        #limits x y
+        #box       
+        #xlabel N_{ion}
+        #ylabel z_0
+
+plotcontour
+        window 1 1 1 1
+        ticksize 0 0 0 0
+        data "ndot/fg_data/likelihoodZeta_ndot.dat"
+        data likelihoodZeta_ndot.dat
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        image($n1,$n2)
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        ctype red
+        limits 0 $n1 0 $n2
+        levels levs
+        contour
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+        set x[0]=z1min
+        set x[1]=z1max
+        set y[0]=z2min
+        set y[1]=z2max
+
+        limits x y
+        box       
+        xlabel N_{ion}
+        ylabel z_0
+
+ndot_xi
+	window 1 -4 1 4
+	limits 0 1.05 0 15
+	ticksize 0.05 0.2 2 10
+	notation -2 2 -2 2
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "ndot/fg_data/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "ndot/wmap3/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "ndot/bolton/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -4 1 3
+	limits 0 1.05 0 15
+	ticksize 0.05 0.2 2 10
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "ndot/fg_data/no_lls/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "ndot/wmap3/no_lls/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "ndot/bolton/no_lls/xi_pdf_z9.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -4 1 2
+	limits 0 1.05 0 6
+	ticksize 0.05 0.2 1 5
+	box 4 2 0 0
+	ylabel P(x_i)
+
+	ctype red
+	data "ndot/fg_data/no_lls/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "ndot/wmap3/no_lls/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "ndot/bolton/no_lls/xi_pdf_z10.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	window 1 -4 1 1
+	limits 0 1.05 0 6
+	ticksize 0.05 0.2 1 5
+	box
+	ylabel P(x_i)
+	xlabel x_i
+
+	ctype red
+	data "ndot/fg_data/no_lls/xi_pdf_z11.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype blue
+	data "ndot/wmap3/no_lls/xi_pdf_z11.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	ctype black
+	data "ndot/bolton/no_lls/xi_pdf_z11.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+	expand 2
+	relocate (6000 28000)
+	label z=8
+	relocate (6000 22000)
+	label z=9
+	relocate (6000 15000)
+	label z=10
+	relocate (6000 8000)
+	label z=11
+	expand 1.6
+
+	window 1 1 1 1
+
+ndot_pdf
+	window 1 2 1 2
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0.7 1.5 0 15
+	ticksize 0.02 0.1 1 5 
+	notation -2 2 -2 2
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype red
+	data "ndot/fg_data/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "ndot/wmap3/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "ndot/bolton/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	window 1 2 1 1
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0 30 0 0.2
+	ticksize 1 5 0.01 0.05
+	notation -4 4 -4 4
+	box
+	xlabel z_{max}
+	ylabel P(z_{max})
+
+	ctype red
+	data "ndot/fg_data/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "ndot/wmap3/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "ndot/bolton/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+
+plotcontour_ndot_new
+        window 1 1 1 1
+        ticksize 0 0 0 0
+        data "ndot/fg_data/likelihoodZeta_ndot.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+        set x[0]=0.8
+        set x[1]=1.4
+        set y[0]=7
+        set y[1]=23
+
+        #form image for SM and plot contours
+  
+        define z1min (z1min)
+        define z1max (z1max)
+        define z2min (z2min)
+        define z2max (z2max)
+
+        image($n1,$n2) $z1min $z1max $z2min $z2max
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        ctype red
+        limits x y
+        levels levs
+        contour
+
+        ctype black
+        ticksize 0.05 0.2 1 5
+        limits x y
+        box       
+        xlabel N_{ion}
+        ylabel z_{max}
+
+
+        data "ndot/wmap3/likelihoodZeta_ndot.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        define z1min (z1min)
+        define z1max (z1max)
+        define z2min (z2min)
+        define z2max (z2max)
+
+        image($n1,$n2) $z1min $z1max $z2min $z2max
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        ctype blue
+        limits x y
+        levels levs
+        contour
+
+        ctype black
+        limits x y
+        box       
+        xlabel N_{ion}
+        ylabel z_{max}
+
+        data "ndot/bolton/likelihoodZeta_ndot.dat"
+        read {z1 2 z2 3 like 6}
+
+        # determine number of parameter values and step size
+        set nxy=dimen(z1)
+        set z1min=1000
+        set z2min=1000
+        set z1max=-1000
+        set z2max=-1000
+        set nz1=0
+        set nz2=0
+        do i=1, nxy {
+                lines $i $i
+                read {z1new 2 z2new 3}
+                if(z1new<z1min){ set z1min=z1new}
+                if(z2new<z2min){ set z2min=z2new}
+                if(z1new>z1max) {
+                        set z1max=z1new
+                        set nz1=nz1+1
+                }
+                if(z2new>z2max) {
+                         set z2max=z2new
+                         set nz2=nz2+1
+                }
+        }
+
+        #often code doesn't finish so remove final columns
+        set step=(z1max-z1min)/nz1
+        set nz1=nz1-2
+        set z1max=z1max-2*step
+
+        define n1 (nz1)
+        define n2 (nz2)
+        define n12 (nxy)
+
+        #form image for SM and plot contours
+  
+        define z1min (z1min)
+        define z1max (z1max)
+        define z2min (z2min)
+        define z2max (z2max)
+
+        image($n1,$n2) $z1min $z1max $z2min $z2max
+        do i=0,nz1-1 {
+                do j=0,nz2-1 {
+                        set image[$i,$j]=like[$i*nz2+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=exp(-1.5)
+        set levs[1]=exp(-1.0)
+        set levs[2]=exp(-0.5)
+
+        ctype black
+        limits x y
+        levels levs
+        contour
+
+        ctype black
+        limits x y
+        box       
+        xlabel N_{ion}
+        ylabel z_{max}
+
+ndot_z_pdf
+
+        limits 6 19 0 0.3
+        ticksize 1 5 0.025 0.1
+        box
+        xlabel z
+        ylabel P(x_i=0.5)
+
+        ctype blue
+        data "ndot/wmap3/z_pdf_xi0.475_dx0.05.dat"
+        read {z 1 pdf 2}
+        connect z pdf
+
+        ctype red
+        data "ndot/fg_data/z_pdf_xi0.475_dx0.05.dat"
+        read {z 1 pdf 2}
+        connect z pdf
+
+
+        ctype black
+        data "ndot/bolton/z_pdf_xi0.475_dx0.05.dat"
+        read {z 1 pdf 2}       
+
+        connect z pdf
+
+
+test_pdf
+	window 1 2 1 2
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0.7 1.5 0 15
+	ticksize 0.02 0.1 1 5 
+	notation -2 2 -2 2
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype red
+	data "ndot/fg_data/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+        ltype 2
+	data "p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+        ltype 0
+
+	window 1 2 1 1
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0 30 0 0.2
+	ticksize 1 5 0.01 0.05
+	notation -4 4 -4 4
+	box
+	xlabel z_{max}
+	ylabel P(z_{max})
+
+	ctype red
+	data "ndot/fg_data/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+        ltype 2
+	data "p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+        ltype 0
+
+test_xi
+	window 1 1 1 1
+	limits 0 1.05 0 15
+	ticksize 0.05 0.2 2 10
+	notation -2 2 -2 2
+	box 
+	ylabel P(x_i)
+
+	ctype red
+	data "ndot/fg_data/no_lls/xi_pdf_z8.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf
+
+ 	ctype black
+        ltype 2
+	data "xi_pdf.dat"
+	read {xi 1 pdf 2}
+	connect xi pdf       
+        ltype 0
+
+test_z_pdf
+
+        limits 6 19 0 0.5
+        ticksize 1 5 0.025 0.1
+        box
+        xlabel z
+        ylabel P(x_i=0.5)
+
+
+        ctype red
+        data "ndot/fg_data/z_pdf_xi0.475_dx0.05.dat"
+        read {z 1 pdf 2}
+        connect z pdf
+
+         ctype black
+        data "z_pdf_xi0.5.dat"
+        read {z 1 pdf 2}
+        connect z pdf    
+
+          ctype black
+        data "z_pdf_xi0.8.dat"
+        read {z 1 pdf 2}
+        connect z pdf 
+
+         ctype black
+        data "z_pdf_xi0.1.dat"
+        read {z 1 pdf 2}
+        connect z pdf 
+
+        connect z pdf
+
+ndot_pdf_nolls
+	window 1 2 1 2
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0.7 1.5 0 15
+	ticksize 0.02 0.1 1 5 
+	notation -2 2 -2 2
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype red
+	data "ndot/fg_data/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "ndot/wmap3/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "ndot/bolton/no_lls/p1_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	window 1 2 1 1
+	location $(5500) $gx2 $gy1 $gy2
+	limits 0 30 0 0.2
+	ticksize 1 5 0.01 0.05
+
+	notation -4 4 -4 4
+	box
+	xlabel z_{max}
+	ylabel P(z_{max})
+
+	ctype red
+	data "ndot/fg_data/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype blue
+	data "ndot/wmap3/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+	ctype black
+	data "ndot/bolton/no_lls/p2_pdf.dat"
+	read {zeta 1 pdf 2}
+	connect zeta pdf
+
+xhistory_nolls
+
+	data output.dat
+	lines 1 1 
+	read tauCMB 1
+	define tauCMB (tauCMB)
+
+	lines 2 0
+	read {z 1 nion 2 xi 3 gam 4}
+
+	window 1 -2 1 2
+	location $(5000) $gx2 $gy1 $gy2
+	limits 1.8 7 0 2
+	notation -2 2 -2 2
+	ticksize 0 0 0 0
+
+	box 4 2 0 0
+	ylabel \Gamma_{-12} [10^{-12}s^{-1}]
+	#connect z (gam) if(gam>0)
+
+	ctype blue
+	data gamma_bh07.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	errorbar zd gd abs(errd) 4
+	errorbar zd gd erru 2
+	ctype black
+
+	ctype red
+	data gamma_fg08.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	errorbar zd gd abs(errd) 4
+	errorbar zd gd erru 2
+	ctype black
+
+	window 1 -2 1 1
+	location $(5000) $gx2 $gy1 $gy2
+	limits 1.8 7 50.4 51.3999
+
+	box
+	ylabel \dot{N}_{ion} [s^{-1} Mpc^{-3}]
+	xlabel z
+
+	#connect z (lg(nion))
+
+	ctype magenta
+	data nion_bh07_nolls.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	connect zd (lg(gd))
+	errorbar zd ((gd)) (abs(errd-gd)) 4
+	errorbar zd ((gd)) (erru-gd) 2
+	ctype black
+
+	ctype green
+	data nion_fg08_nolls.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	connect zd (lg(gd))
+	connect zd (lg(gd))
+	errorbar zd ((gd)) (abs(errd-gd)) 4
+	errorbar zd ((gd)) (erru-gd) 2
+	ctype black
+
+	ctype blue
+	data nion_bh07.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	connect zd (lg(gd))
+	errorbar zd ((gd)) (abs(errd-gd)) 4
+	errorbar zd ((gd)) (erru-gd) 2
+	ctype black
+
+	ctype red
+	data nion_fg08.dat
+	read {zd 1 gd 2 errd 3 erru 4}
+	connect zd (lg(gd))
+	connect zd (lg(gd))
+	errorbar zd ((gd)) (abs(errd-gd)) 4
+	errorbar zd ((gd)) (erru-gd) 2
+	ctype black
+
+	window 1 1 1 1
+
+	ctype blue
+	relocate (23000 28000)
+	label BH 05
+	ctype red
+	relocate (23000 27000)
+	label FG 08
+
+	ctype magenta
+	relocate (23000 15000)
+	label BH 05 (LLS)
+	ctype green
+	relocate (23000 14000)
+	label FG 08 (LLS)
+
+	ctype black
+
+xi_contour
+
+        window 1 1 1 1
+        ticksize 0 0 0 0
+        data "twostep/bolton/no_lls/xi_contour.dat"
+        read {z 1 xi 2 cpdf 3}
+
+        # determine number of parameter values and step size
+
+	set nx=100
+	set nz=(18-7)/0.25-1
+
+        define nx (nx)
+	define nz (nz)
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+	
+	set zmin=7
+	set zmax=18
+	set ximin=0
+	set ximax=1
+
+        set x[0]=zmin
+        set x[1]=zmax
+        set y[0]=ximin
+        set y[1]=ximax
+
+        #form image for SM and plot contours
+  
+        define z1min (zmin)
+        define z1max (zmax)
+        define z2min (ximin)
+        define z2max (ximax)
+
+        image($nz,$nx) $z1min $z1max $z2min $z2max
+        do i=0,nz-1 {
+                do j=0,nx-1 {
+                        set image[$i,$j]=cpdf[$i*nx+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=0.05
+        set levs[1]=0.5
+        set levs[2]=0.95
+
+        ctype red
+        limits x y
+        levels levs
+        contour
+
+        set levs[0]=0.25
+        set levs[1]=0.5
+        set levs[2]=0.75
+
+        ctype blue
+        limits x y
+        levels levs
+        contour
+
+        set levs[0]=0.5
+        set levs[1]=0.5
+        set levs[2]=0.5
+
+        ctype black
+        limits x y
+        levels levs
+        contour
+
+        ctype black
+        ticksize 1 5 0.05 0.2
+        limits x y
+        box       
+        xlabel z
+        ylabel x_i
+
+tb_contour
+
+        window 1 1 1 1
+        ticksize 0 0 0 0
+        data "twostep/bolton/no_lls/xi_contour.dat"
+        read {z 1 xi 2 cpdf 3}
+
+	#21 cm parameters
+	set tsky=140*(1400/180/(1+z))**-2.6
+	set tb=0.027*((1+z)/10)**(1/2)
+
+        # determine number of parameter values and step size
+
+	set nx=100
+	set nz=(18-7)/0.25-1
+
+        define nx (nx)
+	define nz (nz)
+
+        #set limits for plot
+        set dimen(x)=2
+        set y=x
+	
+	set zmin=7
+	set zmax=18
+	set ximin=0
+	set ximax=1
+
+        set x[0]=zmin
+        set x[1]=zmax
+        set y[0]=ximin
+        set y[1]=ximax
+
+        #form image for SM and plot contours
+  
+        define z1min (zmin)
+        define z1max (zmax)
+        define z2min (ximin)
+        define z2max (ximax)
+
+        image($nz,$nx) $z1min $z1max $z2min $z2max
+        do i=0,nz-1 {
+                do j=0,nx-1 {
+                        set image[$i,$j]=cpdf[$i*nx+$j]
+                }
+        }
+
+        #specify different contour levels
+        set dimen(levs)=3
+        set levs[0]=0.05
+        set levs[1]=0.5
+        set levs[2]=0.95
+
+        ctype red
+        limits x y
+        levels levs
+        contour
+
+        set levs[0]=0.25
+        set levs[1]=0.5
+        set levs[2]=0.75
+
+        ctype blue
+        limits x y
+        levels levs
+        contour
+
+        set levs[0]=0.5
+        set levs[1]=0.5
+        set levs[2]=0.5
+
+        ctype black
+        limits x y
+        levels levs
+        contour
+
+        ctype black
+        ticksize 1 5 0.05 0.2
+        limits x y
+        box       
+        xlabel z
+        ylabel x_i
+

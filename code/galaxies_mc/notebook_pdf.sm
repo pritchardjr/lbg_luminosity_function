@@ -1,0 +1,457 @@
+notef
+	macro read notebook_pdf.sm
+	expand 1.4
+	lweight 4
+
+plotf
+	device postencap gamdist_compA.eps
+	gamdist_compA
+	hardcopy
+
+	#device postencap gamdist_compB.eps
+	#gamdist_compB
+	#hardcopy
+
+	dev x11
+
+pdf
+	window 1 2 1 2
+	data xpdf.dat
+	read {x 1 n 2 f 3}
+	limits 0 0.2 0 25
+	ticksize 0 0 0 0
+	box
+	xlabel x
+	ylabel P(x)
+
+	points x f
+
+	set sig=0.017
+	set x0=0.09
+	connect x (exp(-(x-x0)**2/2/sig/sig)/sqrt(2*pi*sig*sig))
+
+	window 1 2 1 1
+	data ypdf.dat
+	read {x 1 n 2 f 3}
+	limits 0 8 0 1.8
+	ticksize 0 0 0 0
+	box
+	xlabel y
+	ylabel P(y)
+
+	connect x f
+
+	window 1 1 1 1
+
+gamdist
+	window 1 3 1 3
+	data xpdf_astro_z4.dat
+	read {x 1 n 2 f 3}
+	limits 0.5 1.5 0 10
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	connect x f
+
+	window 1 3 1 2
+	data ypdf_astro_z4.dat
+	read {x 1 n 2 f 3}
+	limits 0 2 0 5
+	limits 0 1.5 0 10
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	connect x f
+
+	ctype blue
+	set sig=0.4
+	set gam=0.97
+	set f=exp(-(x-gam)**2/2/sig/sig)/sqrt(2*pi*sig*sig)
+	connect x f
+
+	ctype red
+	set sig=0.05
+	set gam=0.55
+	set f=exp(-(x-gam)**2/2/sig/sig)/sqrt(2*pi*sig*sig)
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	data zpdf_astro_z4.dat
+	read {x 1 n 2 f 3}
+	limits 0. 2.8 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	connect x f
+
+	window 1 1 1 1
+
+
+
+gamdist2
+	window 1 3 1 3
+	data xpdf_astro_z5.dat
+	read {x 1 n 2 f 3}
+	limits 1.2 2.9 0 3
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	connect x f
+
+	window 1 3 1 2
+	data ypdf_astro_z5.dat
+	read {x 1 n 2 f 3}
+	limits 0 2 0 5
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	connect x f
+
+	ctype blue
+	set sig=0.3
+	set gam=0.52
+	set f=exp(-(x-gam)**2/2/sig/sig)/sqrt(2*pi*sig*sig)
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	data zpdf_astro_z5.dat
+	read {x 1 n 2 f 3}
+	limits 0 2.8 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	connect x f
+
+	window 1 1 1 1
+
+
+gamdist3
+	window 1 3 1 3
+	data xpdf_astro_z6.dat
+	read {x 1 n 2 f 3}
+	limits 5.2 10.9 0 0.3
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	connect x f
+
+	window 1 3 1 2
+	data ypdf_astro_z6.dat
+	read {x 1 n 2 f 3}
+	limits 0 2 0 8
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	connect x f
+
+	ctype blue
+	set sig=0.3
+	set gam=0.52
+	set f=x/x/0.19	
+	connect x f if(x<=0.19)
+	ctype black
+
+	window 1 3 1 1
+	data zpdf_astro_z6.dat
+	read {x 1 n 2 f 3}
+	limits 0 2.8 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	connect x f
+
+	window 1 1 1 1
+
+
+gamdist_comp
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ctype green
+	data xpdf_astro_z6.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data xpdf_astro_z5.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data xpdf_astro_z4.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ctype green
+	data ypdf_astro_z6.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data ypdf_astro_z5.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data ypdf_astro_z4.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	limits 0 2.5 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype green
+	data zpdf_astro_z6.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data zpdf_astro_z5.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data zpdf_astro_z4.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 1 1 1
+
+gamdist_compA
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ltype 0
+	data "pdf_data/modelA/xpdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/modelA/xpdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/modelA/xpdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0.1 0.5 1 5
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ltype 0
+	data "pdf_data/modelA/ypdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/modelA/ypdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/modelA/ypdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 1
+	limits 0 2.5 0 3.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ltype 0
+	data "pdf_data/modelA/zpdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/modelA/zpdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/modelA/zpdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 1 1 1
+
+gamdist_compB
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ctype green
+	data "pdf_data/modelB/xpdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data "pdf_data/modelB/xpdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data "pdf_data/modelB/xpdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0.1 0.5 0.5 5
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ctype green
+	data "pdf_data/modelB/ypdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data "pdf_data/modelB/ypdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data "pdf_data/modelB/ypdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	limits 0 2.5 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype green
+	data "pdf_data/modelB/zpdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data "pdf_data/modelB/zpdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data "pdf_data/modelB/zpdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 1 1 1
+
+
+gamdist_compC
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ltype 0
+	data "pdf_data/modelC/xpdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/modelC/xpdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/modelC/xpdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0.1 0.5 1 5
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ltype 0
+	data "pdf_data/modelC/ypdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/modelC/ypdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/modelC/ypdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 1
+	limits 0 2.5 0 3.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ltype 0
+	data "pdf_data/modelC/zpdf_astro_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/modelC/zpdf_astro_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/modelC/zpdf_astro_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 1 1 1
+
+

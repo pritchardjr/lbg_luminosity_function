@@ -1,0 +1,176 @@
+notel
+        macro read notebook_lf.sm
+        macro read notebook_ellipse.sm
+        expand 1.4
+        lweight 4
+
+lf_contour
+        expand 1
+        window 2 2 1 2
+        limits -4 -2 -18 -22
+        limits -22 -18 -4 -2
+        box
+        ylabel log_{10}\phi_* [Mpc^-3 mag^-1]
+        xlabel M_* [AB mag]
+
+        data "./data_lf/lf_contour.dat"
+        lines 1 1
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec_flip x0 y0 a11 a22 a12
+
+        window 2 2 2 2
+        limits -4 -2 -4 0
+        box
+        xlabel log_{10}\phi_* [Mpc^-3 mag^-1]
+        ylabel \alpha
+
+        data "./data_lf/lf_contour.dat"
+        lines 2 2
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec x0 y0 a11 a22 a12
+
+        window 2 2 1 1
+        limits -22 -18 -4 0
+        box
+        ylabel log_{10}\phi_* [Mpc^-3 mag^-1]
+        xlabel M_* [AB mag]
+
+        data "./data_lf/lf_contour.dat"
+        lines 3 3
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec x0 y0 a11 a22 a12
+
+        window 1 1 1 1
+
+goods_contour
+        expand 1
+        window 2 2 1 2
+        limits -4 -2 -18 -22
+        limits -22 -18 -4 -2
+        box
+        ylabel log_{10}\phi_* [Mpc^-3 mag^-1]
+        xlabel M_* [AB mag]
+
+        ctype red
+        data "./data_lf/goods_contour.dat"
+        lines 1 1
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec_flip x0 y0 a11 a22 a12
+
+        ctype blue
+        data "./data_lf/udf_contour.dat"
+        lines 1 1
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec_flip x0 y0 a11 a22 a12
+        ctype black
+
+        window 2 2 2 2
+        limits -4 -2 -4 0
+        box
+        xlabel log_{10}\phi_* [Mpc^-3 mag^-1]
+        ylabel \alpha
+
+        ctype red
+        data "./data_lf/goods_contour.dat"
+        lines 2 2
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec x0 y0 a11 a22 a12
+
+        ctype blue
+        data "./data_lf/udf_contour.dat"
+        lines 2 2
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec x0 y0 a11 a22 a12
+        ctype black
+
+
+        window 2 2 1 1
+        limits -22 -18 -4 0
+        box
+        ylabel \alpha
+        xlabel M_* [AB mag]
+
+        ctype red
+        data "./data_lf/goods_contour.dat"
+        lines 3 3
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec x0 y0 a11 a22 a12
+
+        ctype blue
+        data "./data_lf/udf_contour.dat"
+        lines 3 3
+        read {x0 3 y0 4 a11 5 a22 6 a12 7}
+        ellipsec x0 y0 a11 a22 a12
+        ctype black
+
+        window 1 1 1 1
+
+lf
+        limits -25 -15 0 5
+        limits 22 32 0 5.5
+        ticksize 1 5 -1 10
+        notation -4 4 -2 2
+        box
+        xlabel m_{AB}
+        ylabel n [deg^{-2}]
+
+        data stark_lf_z6.dat
+        read {M 1 L 2 sfr 3 nL 4 nLdO 5}
+        set m=(M-(-15))+32
+        connect m (lg(nLdO*0.1))
+
+        data stark_lf_z7.dat
+        read {M 1 L 2 sfr 3 nL 4 nLdO 5}
+        set m=(M-(-15))+32
+        connect m (lg(nLdO*0.1))
+
+        data stark_lf_z8.dat
+        read {M 1 L 2 sfr 3 nL 4 nLdO 5}
+        set m=(M-(-15))+32
+        connect m (lg(nLdO*0.1))
+
+        data stark_lf_z9.dat
+        read {M 1 L 2 sfr 3 nL 4 nLdO 5}
+        set m=(M-(-15))+32
+        connect m (lg(nLdO*0.1))
+
+        data stark_lf_z10.dat
+        read {M 1 L 2 sfr 3 nL 4 nLdO 5}
+        set m=(M-(-15))+32
+        connect m (lg(nLdO*0.1))
+
+        ctype red
+        data lf_z_6.00.dat
+        read {m 1 nL 2}
+        connect m (nL*0.9)
+        ctype black
+
+        ctype black
+        data bouwens_lf_z6.dat
+        read {m 1 n 2 err 3}
+        set nLdO=n*(60*60)
+        set err=err*(60*60)
+        set M=(m-32)+(-15)
+        connect m (lg(nLdO))
+        logerr m (lg(nLdO)) err
+
+        ctype blue
+        data bouwens_lf_z4.dat
+        read {m 1 n 2 err 3}
+        set nLdO=n*(60*60)
+        set err=err*(60*60)
+        points m (lg(nLdO))
+        logerr m (lg(nLdO)) err
+
+        data lf_z_4.00.dat
+        read {m 1 nL 2}
+        connect m (nL)
+        ctype black
+
+        ctype black
+
+
+
+
+
+

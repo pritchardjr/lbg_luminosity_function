@@ -1,0 +1,29 @@
+notet
+	macro read notebook_test.sm
+	expand 1.6
+	lweight 4
+
+fcoll
+	window 1 -2 1 2
+	limits 0 30 -10 1
+	ticksize 1 5 -1 10
+	box 4 2 0 0
+	ylabel fcoll	
+
+	data "fcoll_test.dat"
+	read {z 1 m 2 fc 3 dfc 4}
+
+	connect z (lg(fc))
+
+	window 1 -2 1 1
+	limits 0 30 -10 1
+	ticksize 1 5 -1 10
+	box 
+	xlabel z
+	ylabel dfcoll/dz
+	
+	data "fcoll_test.dat"
+	read {z 1 m 2 fc 3 dfc 4}
+
+	connect z (lg(dfc))
+

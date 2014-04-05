@@ -1,0 +1,135 @@
+notez
+        macro read notebook_lfz.sm
+
+lfz
+        location $(4500) $gx2 $gy1 $gy2
+        limits 18.5 32.5 -6 6
+        ticksize 1 5 -1 10
+        notation -2 2 -2 2
+        box
+        xlabel m_{AB}
+        ylabel N(m<m_{AB}) [deg^{-2}]
+
+        data "./lfdata/lf_z6.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 0
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_z7.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 1
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_z8.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 2
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_z9.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 3
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_z10.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 0
+        connect m (lg(dNdM))
+
+        #plot the quasar LF too
+        data "./lfdata/lf_qso_z6.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 0
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_qso_z7.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 1
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_qso_z8.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 2
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_qso_z9.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 3
+        connect m (lg(dNdM))
+
+        data "./lfdata/lf_qso_z10.dat"
+        lines 2 0
+        read {L 1 m 2 M 3 dNdL 4 dNdM 5} 
+        ltype 0
+        connect m (lg(dNdM))
+
+
+        #now plot the survey regions
+        ltype 2
+        ctype red
+        data "./lfdata/goods_region.dat"
+        lines 2 0
+        read {m 1 dNdM 2}
+        connect m (lg(dNdM))
+
+        ctype blue
+        data "./lfdata/udf_region.dat"
+        lines 2 0
+        read {m 1 dNdM 2}
+        connect m (lg(dNdM))
+
+        ctype black
+        data "./lfdata/jwst_region.dat"
+        lines 2 0
+        read {m 1 dNdM 2}
+        connect m (lg(dNdM))
+
+        ctype green
+        data "./lfdata/euclid_wide_region.dat"
+        lines 2 0
+        read {m 1 dNdM 2}
+        connect m (lg(dNdM))
+
+        data "./lfdata/euclid_deep_region.dat"
+        lines 2 0
+        read {m 1 dNdM 2}
+        connect m (lg(dNdM))
+
+        ltype 0
+
+        ctype black
+        relocate (8000 31500)
+        label almost pure luminosity evolution
+  
+        ctype red
+        relocate (5000 18000)
+        label GOODS
+
+        ctype blue
+        relocate (5000 22000)
+        label HUDF
+        ctype black
+        relocate (22000 18000)
+        label JWST
+        ctype green
+        relocate (5000 12000)
+        label Euclid-Deep
+        relocate (5000 6000)
+        label Euclid-Wide
+
+        ctype black
+        relocate (6000 30000)
+        label LF from 
+        relocate (6000 28500)
+        label Bouwens+ (2006)
+
+        ctype black
+

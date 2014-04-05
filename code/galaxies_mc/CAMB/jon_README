@@ -1,0 +1,8 @@
+
+
+neutrinos
+
+modules.f90
+
+may be helpful to edit this module to increase nqmax0=15
+this parameter specifies the number of q-s to sample for each l of massive neutrino

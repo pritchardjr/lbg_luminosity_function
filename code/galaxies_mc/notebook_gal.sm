@@ -1,0 +1,1277 @@
+noteg
+	macro read notebook_gal.sm
+	expand 1.4
+	lweight 4
+
+plotf
+	device postencap gamdist_compA.eps
+	gamdist_compA
+	hardcopy
+
+	#device postencap gamdist_compB.eps
+	#gamdist_compB
+	#hardcopy
+
+	dev x11
+
+pdf
+	window 1 2 1 2
+	data xpdf.dat
+	read {x 1 n 2 f 3}
+	limits 0 0.2 0 25
+	ticksize 0 0 0 0
+	box
+	xlabel x
+	ylabel P(x)
+
+	points x f
+
+	set sig=0.017
+	set x0=0.09
+	connect x (exp(-(x-x0)**2/2/sig/sig)/sqrt(2*pi*sig*sig))
+
+	window 1 2 1 1
+	data ypdf.dat
+	read {x 1 n 2 f 3}
+	limits 0 8 0 1.8
+	ticksize 0 0 0 0
+	box
+	xlabel y
+	ylabel P(y)
+
+	connect x f
+
+	window 1 1 1 1
+
+gamdist
+	window 1 3 1 3
+	data xpdf_gal_z3.8.dat
+	read {x 1 n 2 f 3}
+	limits 0. 8.2 0 1.5
+	ticksize 0 0 0 0
+	box
+	xlabel \epsilon_{25}
+	ylabel P(\epsilon_{25})
+
+	connect x f
+
+	window 1 3 1 2
+	data ypdf_gal_z3.8.dat
+	read {x 1 n 2 f 3}
+	limits 0 2 0 5
+	limits 0 1.5 0 10
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	connect x f
+
+	ctype blue
+	set sig=0.4
+	set gam=0.97
+	set f=exp(-(x-gam)**2/2/sig/sig)/sqrt(2*pi*sig*sig)
+	connect x f
+
+	ctype red
+	set sig=0.05
+	set gam=0.55
+	set f=exp(-(x-gam)**2/2/sig/sig)/sqrt(2*pi*sig*sig)
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	data zpdf_gal_z3.8.dat
+	read {x 1 n 2 f 3}
+	limits 0. 2.8 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	connect x f
+
+	window 1 1 1 1
+
+
+
+gamdist2
+	window 1 3 1 3
+	data xpdf_gal_z5.dat
+	read {x 1 n 2 f 3}
+	limits 0.6 1.2 0 10
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	connect x f
+
+	window 1 3 1 2
+	data ypdf_gal_z5.dat
+	read {x 1 n 2 f 3}
+	limits 0 2 0 5
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	connect x f
+
+	ctype blue
+	set sig=0.3
+	set gam=0.52
+	set f=exp(-(x-gam)**2/2/sig/sig)/sqrt(2*pi*sig*sig)
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	data zpdf_gal_z5.dat
+	read {x 1 n 2 f 3}
+	limits 0 2.8 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	connect x f
+
+	window 1 1 1 1
+
+
+gamdist3
+	window 1 3 1 3
+	data xpdf_gal_z6.dat
+	read {x 1 n 2 f 3}
+	limits 5.2 10.9 0 0.3
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	connect x f
+
+	window 1 3 1 2
+	data ypdf_gal_z6.dat
+	read {x 1 n 2 f 3}
+	limits 0 2 0 8
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	connect x f
+
+	ctype blue
+	set sig=0.3
+	set gam=0.52
+	set f=x/x/0.19	
+	connect x f if(x<=0.19)
+	ctype black
+
+	window 1 3 1 1
+	data zpdf_gal_z6.dat
+	read {x 1 n 2 f 3}
+	limits 0 2.8 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	connect x f
+
+	window 1 1 1 1
+
+
+gamdist_comp
+	window 1 3 1 3
+	limits 0 10 0 1
+	ticksize 0 0 0 0
+	box
+	xlabel \epsilon_{25}
+	ylabel P(\epsilon_{25})
+
+	ctype yellow
+	data xpdf_gal_z7.4.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype green
+	data xpdf_gal_z5.9.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data xpdf_gal_z5.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data xpdf_gal_z3.8.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0 0 0 0
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ctype yellow
+	data ypdf_gal_z7.4.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype green
+	data ypdf_gal_z5.9.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data ypdf_gal_z5.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data ypdf_gal_z3.8.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	limits 0 2.5 0 3.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype yellow
+	data zpdf_gal_z7.4.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype green
+	data zpdf_gal_z5.9.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data zpdf_gal_z5.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data zpdf_gal_z3.8.dat
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 1 1 1
+
+gamdist_compA
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ltype 0
+	data "pdf_data/galA/xpdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/galA/xpdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/galA/xpdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0.1 0.5 1 5
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ltype 0
+	data "pdf_data/galA/ypdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/galA/ypdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/galA/ypdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 1
+	limits 0 2.5 0 3.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ltype 0
+	data "pdf_data/galA/zpdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/galA/zpdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/galA/zpdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 1 1 1
+
+gamdist_compB
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ctype green
+	data "pdf_data/galB/xpdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data "pdf_data/galB/xpdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data "pdf_data/galB/xpdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0.1 0.5 0.5 5
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ctype green
+	data "pdf_data/galB/ypdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data "pdf_data/galB/ypdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data "pdf_data/galB/ypdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 3 1 1
+	limits 0 2.5 0 4.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ctype green
+	data "pdf_data/galB/zpdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype red
+	data "pdf_data/galB/zpdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype blue
+	data "pdf_data/galB/zpdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+
+	window 1 1 1 1
+
+
+gamdist_compC
+	window 1 3 1 3
+	limits 0 10 0 6.5
+	ticksize 0 0 0 0
+	box
+	xlabel \tau_{eff}
+	ylabel P(\tau_{eff})
+
+	ltype 0
+	data "pdf_data/galC/xpdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/galC/xpdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/galC/xpdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 2
+	limits 0 1.5 0 13
+	ticksize 0.1 0.5 1 5
+	box
+	xlabel \Gamma
+	ylabel P(\Gamma)
+
+	ltype 0
+	data "pdf_data/galC/ypdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/galC/ypdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/galC/ypdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 3 1 1
+	limits 0 2.5 0 3.0
+	ticksize 0 0 0 0
+	box
+	xlabel N_{ion}
+	ylabel P(N_{ion})
+
+	ltype 0
+	data "pdf_data/galC/zpdf_gal_z6.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 1
+	data "pdf_data/galC/zpdf_gal_z5.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ltype 2
+	data "pdf_data/galC/zpdf_gal_z4.dat"
+	read {x 1 n 2 f 3}
+	connect x f
+	ctype black
+	ltype 0
+
+	window 1 1 1 1
+
+
+ndot_plane
+        limits 3 20 0 2
+        ticksize 1 5 0.1 0.5
+        box
+        xlabel z
+        ylabel \dot{n}_{ion}/[10^{51} s^{-1}Mpc^{-3}]
+
+        set dimen(z)=1
+
+        set z[0]=3.8
+        data "./fesc_0.2/errors_gal_z3.8.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.0
+        data "./fesc_0.2/errors_gal_z5.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.9
+        data "./fesc_0.2/errors_gal_z5.9.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=7.4
+        data "./fesc_0.2/errors_gal_z7.4.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=10.2
+        data "./fesc_0.2/errors_gal_z10.2.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        ctype red
+        set z[0]=3.8
+        data "./fesc_1/errors_gal_z3.8.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.0
+        data "./fesc_1/errors_gal_z5.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.9
+        data "./fesc_1/errors_gal_z5.9.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=7.4
+        data "./fesc_1/errors_gal_z7.4.dat"
+        read row gerr 8
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=10.2
+        data "./fesc_1/errors_gal_z10.2.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+        ctype black
+
+        #lya forest constraints
+        ctype blue
+	ltype 0
+	set z=4
+	set Nion=0.8
+	set errp=0.53
+	set errm=-0.19
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+	set z=5.2
+	set Nion=0.8
+	set errp=0.53
+	set errm=-0.21
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+	set z=6.1
+	set Nion=0.48
+	set errp=0.34
+	set errm=-0.12
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        ctype black
+
+        ltype 2
+        set nion0=1e51
+	data "ndot/bolton/best_history.dat"
+	read {z 1 nion 2 xi 3 gam 4 zeta 5 mfp 6 clump 7}
+	connect z (nion)
+        ltype 0
+
+        ltype 1
+        set nion0=1e51
+	data "twostep/bolton/best_history.dat"
+	read {z 1 nion 2 xi 3 gam 4 zeta 5 mfp 6 clump 7}
+	connect z (nion)
+        ltype 0
+
+        ctype blue
+        relocate (24000 28000) 
+        label Ly\alpha  forest
+        ctype black
+        relocate (24000 27000) 
+        label Gal f_{esc}=0.2
+        ctype red
+        relocate (24000 26000) 
+        label Gal f_{esc}=1
+        ctype black
+
+
+lerrorbar 4
+        set x=$1
+        set y=$2
+        set err=$3
+        set flag=$4
+        define flag (flag)
+
+        set ly=lg(y)
+        if(flag==2){
+        set lerr=abs(lg(y+err)-ly)
+        }else{
+        set lerr=abs(lg(y-err)-ly)
+        }
+        set ly=ly+51
+        errorbar x ly lerr $flag
+
+
+lndot_plane
+        limits 3 20 0 2
+        limits 3 20 48.3 52
+        ticksize 1 5 0.1 0.5
+        box
+        xlabel z
+        ylabel \dot{N}
+
+        set dimen(z)=1
+
+        set z[0]=3.8
+        data "./fesc_0.2/errors_gal_z3.8.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=5.0
+        data "./fesc_0.2/errors_gal_z5.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=5.9
+        data "./fesc_0.2/errors_gal_z5.9.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=7.4
+        data "./fesc_0.2/errors_gal_z7.4.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=10.2
+        data "./fesc_0.2/errors_gal_z10.2.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        ctype red
+
+        set z[0]=3.8
+        data "./fesc_1/errors_gal_z3.8.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=5.0
+        data "./fesc_1/errors_gal_z5.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=5.9
+        data "./fesc_1/errors_gal_z5.9.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=7.4
+        data "./fesc_1/errors_gal_z7.4.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=10.2
+        data "./fesc_1/errors_gal_z10.2.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        #lya forest constraints
+        ctype blue
+	ltype 0
+	set z=4
+	set Nion=0.8
+	set errp=0.53
+	set errm=-0.19
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+	set z=5.2
+	set Nion=0.8
+	set errp=0.53
+	set errm=-0.21
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+	set z=6.1
+	set Nion=0.48
+	set errp=0.34
+	set errm=-0.12
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        ctype black
+
+        set nion0=1e51
+	data "ndot/bolton/best_history.dat"
+	read {z 1 nion 2 xi 3 gam 4 zeta 5 mfp 6 clump 7}
+	connect z (lg(nion+1e-20)+51)
+
+        ltype 1
+        set nion0=1e51
+	data "twostep/bolton/best_history.dat"
+	read {z 1 nion 2 xi 3 gam 4 zeta 5 mfp 6 clump 7}
+	connect z  (lg(nion+1e-20)+51)
+        ltype 0
+        
+
+lndot_plane_h
+        limits 3 20 0 2
+        limits 3 20 -2 2
+        ticksize 1 5 -1 10
+        box
+        xlabel z
+        ylabel \dot{N}_{ion}/[H(z)n_H(z)]
+
+        #norm for H*nH
+        set norm=1.255e49
+        set lnorm=49.0986
+        set lnorm=48.8371
+
+        set dimen(z)=1
+
+        set z[0]=3.8
+        data "./errors_gal_z3.8.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        set lH=lnorm+lg((1+z[0])**1.5)
+        set errm=errm/exp(lH*ln(10))
+        set errp=errp/exp(lH*ln(10))
+        set Nion=Nion/exp(lH*ln(10))
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=5.0
+        data "./errors_gal_z5.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        set lH=lnorm+lg((1+z[0])**1.5)
+        set errm=errm/exp(lH*ln(10))
+        set errp=errp/exp(lH*ln(10))
+        set Nion=Nion/exp(lH*ln(10))
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=5.9
+        data "./errors_gal_z5.9.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        set lH=lnorm+lg((1+z[0])**1.5)
+        set errm=errm/exp(lH*ln(10))
+        set errp=errp/exp(lH*ln(10))
+        set Nion=Nion/exp(lH*ln(10))
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=7.4
+        data "./errors_gal_z7.4.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        set lH=lnorm+lg((1+z[0])**1.5)
+        set errm=errm/exp(lH*ln(10))
+        set errp=errp/exp(lH*ln(10))
+        set Nion=Nion/exp(lH*ln(10))
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set z[0]=10.2
+        data "./errors_gal_z10.2.dat"
+        read row gerr 8
+        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+        set lH=lnorm+lg((1+z[0])**1.5)
+        set errm=errm/exp(lH*ln(10))
+        set errp=errp/exp(lH*ln(10))
+        set Nion=Nion/exp(lH*ln(10))
+        points z (lg(Nion)+51)
+	lerrorbar z Nion errp 2
+	lerrorbar z Nion abs(errm) 4
+
+        set nion0=1e51
+	data "ndot/bolton/best_history.dat"
+	read {z 1 nion 2 xi 3 gam 4 zeta 5 mfp 6 clump 7}
+        set lH=lnorm+lg((1+z)**1.5)
+	connect z (lg(nion+1e-20)+51-lH)
+
+        ctype black
+
+ndot_plane_comp
+        limits 3 20 0 2
+        ticksize 1 5 0.1 0.5
+        box
+        xlabel z
+        ylabel \dot{N}
+
+        set dimen(z)=1
+
+        ctype red
+        set z[0]=3.8
+        data "./pdf_data/galA/errors_gal_z3.8.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.0
+        data "./pdf_data/galA/errors_gal_z5.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.9
+        data "./pdf_data/galA/errors_gal_z5.9.dat"
+        read row gerr 8      
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=7.4
+        data "./pdf_data/galA/errors_gal_z7.4.dat"
+        read row gerr 8        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=10.2
+        data "./pdf_data/galA/errors_gal_z10.2.dat"
+        read row gerr 8        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+       ctype green
+        set z[0]=3.95
+        data "./pdf_data/galB/errors_gal_z3.8.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.15
+        data "./pdf_data/galB/errors_gal_z5.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=6.05
+        data "./pdf_data/galB/errors_gal_z5.9.dat"
+        read row gerr 8      
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=7.55
+        data "./pdf_data/galB/errors_gal_z7.4.dat"
+        read row gerr 8        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=10.4
+        data "./pdf_data/galB/errors_gal_z10.2.dat"
+        read row gerr 8        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+       ctype blue
+        set z[0]=3.6
+        data "./pdf_data/galC/errors_gal_z3.8.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=4.8
+        data "./pdf_data/galC/errors_gal_z5.dat"
+        read row gerr 8       
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=5.7
+        data "./pdf_data/galC/errors_gal_z5.9.dat"
+        read row gerr 8      
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=7.2
+        data "./pdf_data/galC/errors_gal_z7.4.dat"
+        read row gerr 8        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        set z[0]=10.0
+        data "./pdf_data/galC/errors_gal_z10.2.dat"
+        read row gerr 8        
+	set Nion=gerr[0]
+	set errm=gerr[1]
+	set errp= gerr[2]
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        #lya forest constraints
+        ctype black
+	ltype 0
+	set z=4
+	set Nion=0.8
+	set errp=0.53
+	set errm=-0.19
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+	set z=5.2
+	set Nion=0.8
+	set errp=0.53
+	set errm=-0.21
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+	set z=6.1
+	set Nion=0.48
+	set errp=0.34
+	set errm=-0.12
+	errorbar z Nion errp 2
+	errorbar z Nion abs(errm) 4
+
+        ctype black
+
+        #integration of LF down to different limits
+elim
+        limits -4 1 0 8
+        ticksize -1 10 0.2 1
+        notation -2 2 -2 2
+        box
+        xlabel L_{min}/L_0
+        ylabel \epsilon_{25}
+
+        ctype blue
+        data "./e25_lmin_z3.8.dat"
+        read {z 1 x 2 lmin 5 ep 6}
+        connect (lg(x)) ep
+        relocate (20000 30000)
+        draw (23000 30000)
+        label z=3.8
+
+        ctype red
+        data "./e25_lmin_z5.dat"
+        read {z 1 x 2 lmin 5 ep 6}
+        connect (lg(x)) ep
+        relocate (20000 29000)
+        draw (23000 29000)
+        label z=5
+
+        ctype green
+        data "./e25_lmin_z5.9.dat"
+        read {z 1 x 2 lmin 5 ep 6}
+        connect (lg(x)) ep
+        relocate (20000 28000)
+        draw (23000 28000)
+        label z=5.9
+
+        ctype yellow
+        data "./e25_lmin_z7.4.dat"
+        read {z 1 x 2 lmin 5 ep 6}
+        connect (lg(x)) ep
+        relocate (20000 27000)
+        draw (23000 27000)
+        label z=7.4
+
+        ctype black
+        vertical (lg(0.01))
+        ctype black
+
+recomb
+        limits 5 15 0 10
+        ticksize 1 5 1 5
+        box
+        xlabel z
+        ylabel rate [10^{50} s^{-1} Mpc^{-3}]
+
+        data recomb_lim.dat
+        read {z 1 NC 10 NI 11 NM 12 NR 13}
+
+        
+        connect z (NC/1e50)
+        ltype 2
+        connect z (NI/1e50)
+        ltype 3
+        connect z (NM/1e50)
+        ltype 1
+        connect z (NR/1e50)
+        ltype 0
+
+        ltype 0
+        relocate (24000 14000)
+        draw (27000 14000)
+        label Atomic
+        ltype 2
+        relocate (24000 13000)
+        draw (27000 13000)
+        label Ion
+        ltype 3
+        relocate (24000 12000)
+        draw (27000 12000)
+        label H2
+        ltype 1
+         relocate (24000 11000)
+        draw (27000 11000)
+        label recomb
+        ltype 0
+
+sfd
+        window 1 -2 1 2
+        location $(4500) $gx2 $gy1 $gy2
+        limits 4 30 -2.999 2
+        ticksize 1 5 -1 10
+        notation -4 4 -2 2
+        box 4 2 0 0
+        #xlabel z
+        ylabel \rho_{*} [10^6 M_{sol} Mpc^{-3}]
+      
+
+          data sfd_reion_H.dat
+        read {z 1 sfr 2 sfd 3 sfdR 4}
+        connect z (lg(sfd/1e6+1e-20))
+
+        ltype 1
+        connect z (lg(sfdR/1e6+1e-20))        
+        ltype 0
+
+
+        ltype 3
+        data sfd_reion_H2.dat
+        read {z 1 sfr 2 sfd 3 sfdR 4}
+        connect z (lg(sfd/1e6+1e-20))
+
+        ltype 2
+        data sfd_reion_ion.dat
+        read {z 1 sfr 2 sfd 3 sfdR 4}
+        connect z (lg(sfd/1e6+1e-20))
+        ltype 0
+
+        vertical 8
+
+        window 1 -2 1 1
+        location $(4500) $gx2 $gy1 $gy2
+        limits 4 30 -3 1.99
+        ticksize 1 5 -1 10
+        box
+        xlabel z
+        ylabel d\rho_{*}/dz [10^6 M_{sol} Mpc^{-3}]
+      
+        ltype 0
+          data sfd_reion_H.dat
+        read {z 1 sfr 2 sfd 3 sfdR 4 sfrZ 5}
+        connect z (lg(sfrZ/1e6+1e-20))
+
+        ltype 1
+        connect z (lg(sfdR/1e6+1e-20))        
+        ltype 0
+
+        ltype 3
+          data sfd_reion_H2.dat
+        read {z 1 sfr 2 sfd 3 sfdR 4 sfrZ 5}
+        connect z (lg(sfrZ/1e6+1e-20))
+
+        ltype 2
+          data sfd_reion_ion.dat
+        read {z 1 sfr 2 sfd 3 sfdR 4 sfrZ 5}
+        connect z (lg(sfrZ/1e6+1e-20))
+
+        vertical 7
+
+        ltype 0
+        relocate (24000 11000)
+        draw (27000 11000)
+        label Atomic
+        ltype 2
+        relocate (24000 10000)
+        draw (27000 10000)
+        label Ion
+        ltype 3
+        relocate (24000 9000)
+        draw (27000 9000)
+        label H2
+        ltype 1
+         relocate (24000 8000)
+        draw (27000 8000)
+        label reion
+        ltype 0
+
+haloN
+        data "./halo_abundance.dat"
+        read {z 1 mHI 2 mH2 3 mIon 4 nHI 5 nH2 6 nIon 7 ngal 8 phi0 9}
+
+        limits 3 30 -3 3
+        ticksize 1 5 -1 10
+        box
+        xlabel z
+        ylabel n(M>M_{cool}) [Mpc^{-3}]
+
+        ltype 0
+        connect z (lg(nH2))
+        ltype 1
+        connect z (lg(nHI))
+        ltype 2
+        connect z (lg(nIon))
+        ltype 4
+        connect z (lg(ngal))
+
+        ltype 0
+
+        ltype 0
+        relocate (25000 28000)
+        draw (28000 28000)
+        label H2
+        ltype 1
+        relocate (25000 27000)
+        draw (28000 27000)
+        label HI
+        ltype 2
+        relocate (25000 26000)
+        draw (28000 26000)
+        label nIon
+        ltype 4
+        relocate (25000 25000)
+        draw (28000 25000)
+        label ngal
+ 

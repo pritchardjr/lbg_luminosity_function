@@ -1,0 +1,53 @@
+notef
+        macro read notebook_fzh.sm
+
+pdf
+        data pdf_temp.dat
+        read {psi 1 pdf 2}
+
+        limits -0.1 1.2 -2 1.5
+        ticksize 0.1 0.5 -1 10
+        box
+
+        connect psi (lg(pdf))
+
+psi
+        window 1 -2 1 2
+        data psi_temp.dat
+        read {delta 1 psi 2 xi 3 deltaL 4}
+        limits -1 1 0 2
+        ticksize 0.1 0.5 0.1 0.5
+        box 4 2 0 0 
+        ylabel \psi
+        
+        connect delta psi
+
+        window 1 -2 1 1
+        data psi_temp.dat
+        read {delta 1 psi 2 xi 3 deltaL 4}
+        limits -1 1 -5 0.3
+        ticksize 0.1 0.5 -1 10
+        notation -2 2 -2 2
+        box
+        xlabel \delta
+        ylabel x_i
+        
+        connect delta (lg(xi))
+
+        relocate (5000 30000)
+        label m_{pix}=10^{13}M_{sol}
+        relocate (10000 30000)
+        label \zeta=40
+
+        window 1 1 1 1
+
+psiL
+        data psi_temp.dat
+        read {delta 1 psi 2 xi 3 deltaL 4}
+        limits -1 9 0.8 1.2
+        ticksize 0 0 0 0
+        box
+        xlabel \delta
+        ylabel \psi
+        
+        connect deltaL psi
