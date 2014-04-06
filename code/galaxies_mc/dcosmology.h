@@ -70,7 +70,7 @@ void resetCosmology(double om0, double lam0, double omb, double hparam,
   
   // Finding collapse fraction
   double fCollPSExact(double z, double mMin = -1.0);
-  double fColl(double z, double mMin = -1.0, int massFcn = 0);
+  double fColl(double z, double mMin = -1.0, int massFcn = PS_MF);
   double nCollObject(double z, double mMin = -1.0);
 
   // Linear bias
@@ -203,6 +203,8 @@ double nm(double tM, double z, Cosmology *c);
 double nmST(double z, double tM, Cosmology *c);
 double nmcond(double tM, double z, double mBubble, double deltaBubble, 
 	      Cosmology *c);
+
+double biasHalo(double mass, double z, Cosmology *c, int massfcn);
 double biasm(double mass, double z, Cosmology *c);
 double biasmST(double mass, double z, Cosmology *c);
 double sigm(double m, double &dsdm, Cosmology *c, int flag);

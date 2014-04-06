@@ -611,12 +611,16 @@ double setFCollInt(double mass, Cosmology *c1, double z1, int fcn,
     return 0.0;
   }
 
-  if (massFcn == 1)
+  if (massFcn==PS_MF){  
+     result = c->dndlM(z,mass);
+  }else if(massFcn == ST_MF){
     result = c->dndlMSheth(z,mass);
-  else if (massFcn == 2)
+  }else if (massFcn == JN_MF){
     result = c->dndlMJenkins(z,mass);
-  else
-    result = c->dndlM(z,mass);
+  }else{
+     cout<<"mass function not defined"<<endl;
+     result=0.0;
+  }
   return result;
 }
 
@@ -1742,7 +1746,24 @@ double nmcond(double tM, double z, double mBubble, double deltaBubble,
   return tdn;
 }
 
-/* Halo bias (linear) */
+
+double biasHalo(double mass, double z, Cosmology *c, int massfcn)
+{
+   double bias;
+   if(massfcn==PS_MF){
+      bias=biasm(mass,z,c);
+   }else if(massfcn==ST_MF){
+      bias=biasmST(mass,z,c);
+   }else{
+      cout<<"mass function not defined"<<endl;
+      bias=0.0;
+   }
+
+
+   return bias;
+}
+
+/* Halo bias (linear) - Press Schecter*/
 double biasm(double mass, double z, Cosmology *c)
 {
   double deltasc,deltasc0,sig;
@@ -1757,7 +1778,7 @@ double biasm(double mass, double z, Cosmology *c)
   return bias;
 }
 
-/* Halo bias (linear) */
+/* Halo bias (linear) - ShethTorman */
 double biasmST(double mass, double z, Cosmology *c)
 {
   double q(0.75), p(0.3);
@@ -1851,7 +1872,9 @@ double sigm(double m, double &dsdm, Cosmology *c, int flag)
  *************  Collapse rate *****************************************
  *********************************************************************/
 
-/* Find mean rate at which matter is collapsing into bound objects */
+/* Find mean rate at which matter is collapsing into bound objects 
+   - Press-Scheter mass function
+*/
 double dfcdzPS(double z, Cosmology *c) 
 {
   double dfcdz;
