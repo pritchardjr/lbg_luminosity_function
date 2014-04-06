@@ -30,6 +30,8 @@ const double NEWTONCONSTANT(6.67428e-8);   // G in cgs
 // Constant needed for Press-Schechter calculations
 const int MAXBINS(7);
 
+enum massfunctions {PS_MF,ST_MF,JN_MF,TK_MF};
+
 class Cosmology {
 
  public:
@@ -75,7 +77,8 @@ void resetCosmology(double om0, double lam0, double omb, double hparam,
   double biasPS(double z, double mass);
 
   // Press-Schechter functions and extensions
-  double dndlM(double z, double tM);
+  double dndlM(double z, double tM, int massfcn=PS_MF);
+  double dndlMPress(double z, double tM);
   double dndlMSheth(double z, double tM);
   double dndlMJenkins(double z, double tM);
   void resetPowerSpectrum();

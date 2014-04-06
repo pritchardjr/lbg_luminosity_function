@@ -702,10 +702,31 @@ double Cosmology::biasPS(double z, double mass)
  * function comes ultimately from Wayne Hu's website.
  */
 
+
+/* Calculates halo Mass function 
+ * tM = halo mass (Msun)
+ */
+double Cosmology::dndlM(double z, double tM, int massfcn)
+{
+   double tdn;
+   if(massfcn==PS_MF){
+      tdn=dndlMPress(z,tM);
+   }else if(massfcn==ST_MF){
+      tdn=dndlMSheth(z,tM);   
+   }else if(massfcn==JN_MF){
+      tdn=dndlMJenkins(z,tM);   
+   }else{
+      cout<<"mass function not defined"<<endl;
+      tdn=0.0;
+   }
+
+  return tdn;
+}
+
 /* Calculates Press-Schechter mass function 
  * tM = halo mass (Msun)
  */
-double Cosmology::dndlM(double z, double tM)
+double Cosmology::dndlMPress(double z, double tM)
 {
   double dCritZ,sigM,dlsdlM,tdn,dsdM;
 
